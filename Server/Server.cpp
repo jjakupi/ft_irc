@@ -1,4 +1,4 @@
-#include "server.hpp"
+#include "Server.hpp"
 
 Server::Server()
 	: m_serverFd(-1), m_port(0), m_password("")
