@@ -1,19 +1,19 @@
 #include "Server.hpp"
 
 Server::Server()
-	: m_serverFd(-1), m_port(0), m_password("")
+	: _serverFd(-1), _port(0), _password("")
 {
 }
 
 Server::Server(int port, std::string password)
-	: m_serverFd(-1), m_port(port), m_password(password)
+	: _serverFd(-1), _port(port), _password(password)
 {
 }
 
 Server::Server(Server const &oth)
-	: m_serverFd(oth.m_serverFd),
-	  m_port(oth.m_port),
-	  m_password(oth.m_password)
+	: _serverFd(oth._serverFd),
+	  _port(oth._port),
+	  _password(oth._password)
 {
 }
 
@@ -21,15 +21,15 @@ Server &Server::operator=(Server const &oth)
 {
 	if (this != &oth)
 	{
-		m_serverFd = oth.m_serverFd;
-		m_port = oth.m_port;
-		m_password = oth.m_password;
+		_serverFd = oth._serverFd;
+		_port = oth._port;
+		_password = oth._password;
 	}
 	return (*this);
 }
 
 Server::~Server()
 {
-	if (m_serverFd != -1)
-		close(m_serverFd);
+	if (_serverFd != -1)
+		close(_serverFd);
 }
