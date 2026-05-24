@@ -13,10 +13,10 @@
 class Server
 {
 	private:
-		int			m_clientFd;
-		int			m_serverFd;
-		int			m_port;
-		std::string	m_password;
+		int			_clientFd;
+		int			_serverFd;
+		int			_port;
+		std::string	_password;
 
 	public:
 		Server();
