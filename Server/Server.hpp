@@ -31,7 +31,7 @@ class Server
 		int		run();
 
 		Client	*getClient(int fd);
-		bool	nickNamInUse(std::string nickname);
+		bool	nickNameAlreadyUsed(std::string nickname);
 		void	sendResponse(int fd, std::string message);
 };
 
