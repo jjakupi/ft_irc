@@ -9,6 +9,7 @@
 # include <unistd.h>
 //# include <bits/stdc++.h>
 # include <poll.h>
+# include <vector>
 # include "../Client/Client.hpp"
 
 class Server

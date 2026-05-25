@@ -17,3 +17,8 @@ bool Server::nickNameAlreadyUsed(std::string nickname) {
 	}
 	return false;
 }
+
+void Server::sendResponse(int fd, std::string message)
+{
+	send(fd, message.c_str(), message.size(), 0);
+}
