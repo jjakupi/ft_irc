@@ -7,10 +7,10 @@
 # include <sys/socket.h>
 # include <netinet/in.h>
 # include <unistd.h>
-//# include <bits/stdc++.h>
+# include <bits/stdc++.h>
 # include <poll.h>
 # include <vector>
-# include "../Client/Client.hpp"
+# include "../Client/Client.hp"
 
 class Server
 {
@@ -19,6 +19,7 @@ class Server
 		int			_serverFd;
 		int			_port;
 		std::string	_password;
+    std::vector<pollfd> _pollFds;
 		std::vector<Client>	_clients;
 
 	public:
