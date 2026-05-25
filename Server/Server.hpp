@@ -7,8 +7,10 @@
 # include <sys/socket.h>
 # include <netinet/in.h>
 # include <unistd.h>
-#include <bits/stdc++.h>
-#include <poll.h>
+//# include <bits/stdc++.h>
+# include <poll.h>
+# include <vector>
+# include "../Client/Client.hpp"
 
 class Server
 {
@@ -17,6 +19,7 @@ class Server
 		int			_serverFd;
 		int			_port;
 		std::string	_password;
+		std::vector<Client>	_clients;
 
 	public:
 		Server();
@@ -27,6 +30,10 @@ class Server
 
 		int		initSocket();
 		int		run();
+
+		Client	*getClient(int fd);
+		bool	nickNameAlreadyUsed(std::string nickname);
+		void	sendResponse(int fd, std::string message);
 };
 
 #endif
