@@ -13,7 +13,11 @@ int	main(int argc, char **argv)
 
 	Server server(port, password);
 
-	server.initSocket();
+	if (server.initSocket() == -1)
+		return (1);
+
+	if (server.run() == -1)
+		return (1);
 
 	return (0);
 }

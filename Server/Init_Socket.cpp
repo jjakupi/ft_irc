@@ -39,7 +39,11 @@ int	Server::initSocket()
 		_serverFd = -1;
 		return (-1);
 	}
-
+	pollfd serverPoll;
+	serverPoll.fd = _serverFd;
+	serverPoll.events = POLLIN;
+	serverPoll.revents = 0;
+	_pollFds.push_back(serverPoll);
 	std::cout << "Server listening on port " << _port << std::endl;
 	return (0);
 }
