@@ -11,9 +11,11 @@ class Client {
 		std::string	_userName;
 		bool		_registered;
 		bool		_loggedIn;
+		std::string	_buffer;
 
 	public:
 		Client();
+		Client(int fd);
 		Client(std::string nickname, std::string username, int fd);
 		Client(const Client &src);
 		Client &operator=(const Client &src);
@@ -30,6 +32,9 @@ class Client {
 		void	setUserName(std::string username);
 		void	setRegistered(bool value);
 		void	setLoggedIn(bool value);
+		void	appendBuffer(const std::string &data);
+		bool	hasCompleteCommand() const;
+		std::string	popCommand();
 };
 
 #endif
