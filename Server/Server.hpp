@@ -3,6 +3,7 @@
 
 # include <iostream>
 # include <string>
+#include <cstring>
 # include <cstdlib>
 # include <sys/socket.h>
 # include <netinet/in.h>
@@ -21,6 +22,9 @@ class Server
 		std::vector<pollfd> _pollFds;
 		std::vector<Client>	_clients;
 
+		void		acceptClient();
+		void		receiveFromClient(int fd);
+		void		removeClient(int fd);
 	public:
 		Server();
 		Server(int port, std::string password);
@@ -34,12 +38,16 @@ class Server
 		Client	*getClient(int fd);
 		bool	nickNameAlreadyUsed(std::string nickname);
 		void	sendResponse(int fd, std::string message);
+<<<<<<< HEAD
 		void 	addClient(int fd);
 		bool	isValidNickName(std::string nickname);
 
 		void pass(std::string cmd, int fd);
 		void nick(std::string cmd, int fd);
 		void user(std::string cmd, int fd);
+=======
+		void	addClient(int fd);
+>>>>>>> f32decf (serverUtils)
 };
 
 #endif

@@ -12,6 +12,10 @@ Client::Client(std::string nickname, std::string username, int fd) : _nickName(n
 	this->_registered = false;
 	this->_loggedIn = false;
 }
+Client::Client(int fd)
+	: _fd(fd)
+{
+}
 
 Client::Client(const Client &src) {
 	*this = src;
@@ -24,6 +28,7 @@ Client& Client::operator=(const Client &src) {
 		this->_userName = src._userName;
 		this->_registered = src._registered;
 		this->_loggedIn = src._loggedIn;
+		std::string	_buffer;
 	}
 	return *this;
 }
