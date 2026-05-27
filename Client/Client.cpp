@@ -74,3 +74,8 @@ void Client::setRegistered(bool value) {
 void Client::setLoggedIn(bool value) {
 	this->_loggedIn = value;
 }
+
+std::string &Client::getBuffer()
+{
+	return this->_buffer;
+}
