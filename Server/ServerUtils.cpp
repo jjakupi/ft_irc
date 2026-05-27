@@ -2,26 +2,17 @@
 #include "../Client/Client.hpp"
 
 Client *Server::getClient(int fd) {
-<<<<<<< HEAD
-<<<<<<< HEAD
-	for (size_t i = 0; i < _clients.size(); i++) {
-=======
-	for (size_t i; i < _clients.size(); i++) {
->>>>>>> f32decf (serverUtils)
-=======
-	for (size_t i = 0; i < _clients.size(); i++) {
->>>>>>> 902fe50 (parsed the cleancommand)
+	for (size_t i = 0; i < _clients.size(); ++i) {
 		if (_clients[i].getFd() == fd)
 			return (&_clients[i]);
 	}
 	return NULL;
 }
 
-bool Server::nickNameAlreadyUsed(std::string nickname) {
-	for (size_t i = 0; i < _clients.size(); i++) {
-		if (_clients[i].getNickName() == nickname) {
+bool Server::nickNameAlreadyUsed(const std::string &nickname) {
+	for (size_t i = 0; i < _clients.size(); ++i) {
+		if (_clients[i].getNickName() == nickname)
 			return true;
-		}
 	}
 	return false;
 }
@@ -37,13 +28,14 @@ void Server::addClient(int fd)
 	newClient.setFd(fd);
 	_clients.push_back(newClient);
 }
-<<<<<<< HEAD
+
 /*
 Selon la RFC 2812 :
 Le premier caractère doit être : (a-z, A-Z) [ ] \ ` _ ^ { | }
 Les caractères suivants peuvent être : (a-z, A-Z) (0-9) [ ] \ ` _ ^ { | } -
 */
-bool Server::isValidNickName(std::string nickname) {
+bool Server::isValidNickName(std::string nickname)
+{
 	if(nickname.empty())
 		return false;
 	if (!((nickname[0] >= 65 && nickname[0] <= 122) || (nickname[0] >= 91 && nickname[0] <= 96) || (nickname[0] >= 123 && nickname[0] <= 125)))
@@ -53,7 +45,7 @@ bool Server::isValidNickName(std::string nickname) {
 			return false;
 	}
 	return true;
-=======
+}
 
 void	Server::acceptClient()
 {
@@ -82,9 +74,6 @@ void	Server::receiveFromClient(int fd)
 	if (bytes > 0)
 	{
 		std::string msg(buf.data(), bytes);
-		//std::cout << "Client " << fd << " sent: " << msg << std::endl;
-
-		// later:
 		Client *client = getClient(fd);
 		client->appendBuffer(msg);
 		while (client->hasCompleteCommand())
@@ -129,5 +118,5 @@ void	Server::removeClient(int fd)
 			break;
 		}
 	}
->>>>>>> f32decf (serverUtils)
 }
+// end ServerUtils

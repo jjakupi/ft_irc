@@ -36,18 +36,14 @@ class Server
 		int		run();
 
 		Client	*getClient(int fd);
-		bool	nickNameAlreadyUsed(std::string nickname);
+		bool Server::nickNameAlreadyUsed(const std::string &nickname);
 		void	sendResponse(int fd, std::string message);
-<<<<<<< HEAD
 		void 	addClient(int fd);
 		bool	isValidNickName(std::string nickname);
 
 		void pass(std::string cmd, int fd);
 		void nick(std::string cmd, int fd);
 		void user(std::string cmd, int fd);
-=======
-		void	addClient(int fd);
->>>>>>> f32decf (serverUtils)
 };
 
 #endif
