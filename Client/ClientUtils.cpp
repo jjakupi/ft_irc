@@ -15,12 +15,13 @@ std::string	Client::popCommand()
 	std::string command;
 	std::string::size_type pos = _buffer.find("\n");
 
-	if (pos == std::string::npos);
+	if (pos == std::string::npos)
+		return "";
 	command = _buffer.substr(0, pos);
 	_buffer.erase(0, pos + 1);
 
 	if (!command.empty() && command[command.size() - 1] == '\r')
-		command.pop_back();
+		command.erase(command.size() - 1);
 	return command;
 }
 
@@ -62,8 +63,7 @@ std::string	Client::cleanCommand(std::string command)
 	std::string::size_type pos = command.find(':');
 	if(pos == std::string::npos)
 	{
-		cleanspaces(command);
-		return command;
+		return cleanspaces(command);
 	}
 	else
 	{
@@ -73,3 +73,5 @@ std::string	Client::cleanCommand(std::string command)
 		return before + " " + after;
 	}
 }
+
+

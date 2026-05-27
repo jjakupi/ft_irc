@@ -2,18 +2,17 @@
 #include "../Client/Client.hpp"
 
 Client *Server::getClient(int fd) {
-	for (size_t i = 0; i < _clients.size(); i++) {
+	for (size_t i = 0; i < _clients.size(); ++i) {
 		if (_clients[i].getFd() == fd)
 			return (&_clients[i]);
 	}
 	return NULL;
 }
 
-bool Server::nickNameAlreadyUsed(std::string nickname) {
-	for (size_t i = 0; i < _clients.size(); i++) {
-		if (_clients[i].getNickName() == nickname) {
+bool Server::nickNameAlreadyUsed(const std::string &nickname) {
+	for (size_t i = 0; i < _clients.size(); ++i) {
+		if (_clients[i].getNickName() == nickname)
 			return true;
-		}
 	}
 	return false;
 }
@@ -28,6 +27,24 @@ void Server::addClient(int fd)
 	Client newClient;
 	newClient.setFd(fd);
 	_clients.push_back(newClient);
+}
+
+/*
+Selon la RFC 2812 :
+Le premier caractère doit être : (a-z, A-Z) [ ] \ ` _ ^ { | }
+Les caractères suivants peuvent être : (a-z, A-Z) (0-9) [ ] \ ` _ ^ { | } -
+*/
+bool Server::isValidNickName(std::string nickname)
+{
+	if(nickname.empty())
+		return false;
+	if (!((nickname[0] >= 65 && nickname[0] <= 122) || (nickname[0] >= 91 && nickname[0] <= 96) || (nickname[0] >= 123 && nickname[0] <= 125)))
+		return false;
+	for (size_t i = 0; i < nickname.size(); i++) {
+		if (!(isalnum(nickname[i]) || (nickname[i] >= 91 && nickname[i] <= 96) || (nickname[i] >= 123 && nickname[i] <= 125) || (nickname[i] == 45)))
+			return false;
+	}
+	return (true);
 }
 
 void	Server::acceptClient()
@@ -57,19 +74,21 @@ void	Server::receiveFromClient(int fd)
 	if (bytes > 0)
 	{
 		std::string msg(buf.data(), bytes);
-		//std::cout << "Client " << fd << " sent: " << msg << std::endl;
-
-		// later:
 		Client *client = getClient(fd);
+		//std::cout << "MSG=[" << msg << "]" << std::endl;
 		client->appendBuffer(msg);
+		//std::cout << "BUFFER=[" << client->getBuffer() << "]" << std::endl;
 		while (client->hasCompleteCommand())
 		{
 			std::string command = client->popCommand();
+			//std::cout << "RAW=[" << command << "]" << std::endl;
 			command = client->cleanCommand(command);
+			//std::cout << "CLEAN COMMAND=[" << command << "]" << std::endl;
 			if (!command.empty())
-				std::cout << "COMMAND=[" << command << "] from client: " << fd << std::endl;
+			{
+				this->getCommand(command, fd);
+			}
 		}
-
 	}
 	else if (bytes == 0)
 	{
@@ -104,4 +123,17 @@ void	Server::removeClient(int fd)
 			break;
 		}
 	}
+}
+// end ServerUtils
+void Server::getCommand(std::string command, int fd)
+{
+	std::string cmdName = command.substr(0, command.find(' '));
+	for(size_t i = 0; i < cmdName.size(); i++)
+		cmdName[i] = std::toupper(cmdName[i]);
+	if (cmdName == "PASS")
+		this->pass(command, fd);
+	else if(cmdName == "NICK")
+		this->nick(command, fd);
+	else
+		std::cout << "unknown command" << std::endl;
 }
