@@ -10,6 +10,7 @@
 # include <unistd.h>
 # include <poll.h>
 # include <vector>
+#include <cstdio>
 # include "../Client/Client.hpp"
 
 class Server
@@ -35,11 +36,12 @@ class Server
 		int		initSocket();
 		int		run();
 
-		Client	*getClient(int fd);
-		bool Server::nickNameAlreadyUsed(const std::string &nickname);
-		void	sendResponse(int fd, std::string message);
-		void 	addClient(int fd);
-		bool	isValidNickName(std::string nickname);
+		Client		*getClient(int fd);
+		bool		nickNameAlreadyUsed(const std::string &nickname);
+		void		sendResponse(int fd, std::string message);
+		void 		addClient(int fd);
+		bool		isValidNickName(std::string nickname);
+		void		getCommand(std::string command, int fd);
 
 		void pass(std::string cmd, int fd);
 		void nick(std::string cmd, int fd);

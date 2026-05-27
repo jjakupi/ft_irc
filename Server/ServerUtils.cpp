@@ -75,15 +75,20 @@ void	Server::receiveFromClient(int fd)
 	{
 		std::string msg(buf.data(), bytes);
 		Client *client = getClient(fd);
+		//std::cout << "MSG=[" << msg << "]" << std::endl;
 		client->appendBuffer(msg);
+		//std::cout << "BUFFER=[" << client->getBuffer() << "]" << std::endl;
 		while (client->hasCompleteCommand())
 		{
 			std::string command = client->popCommand();
+			//std::cout << "RAW=[" << command << "]" << std::endl;
 			command = client->cleanCommand(command);
+			//std::cout << "CLEAN COMMAND=[" << command << "]" << std::endl;
 			if (!command.empty())
-				std::cout << "COMMAND=[" << command << "] from client: " << fd << std::endl;
+			{
+				this->getCommand(command, fd);
+			}
 		}
-
 	}
 	else if (bytes == 0)
 	{
@@ -120,3 +125,15 @@ void	Server::removeClient(int fd)
 	}
 }
 // end ServerUtils
+void Server::getCommand(std::string command, int fd)
+{
+	std::string cmdName = command.substr(0, command.find(' '));
+	for(size_t i = 0; i < cmdName.size(); i++)
+		cmdName[i] = std::toupper(cmdName[i]);
+	if (cmdName == "PASS")
+		this->pass(command, fd);
+	else if(cmdName == "NICK")
+		this->nick(command, fd);
+	else
+		std::cout << "unknown command" << std::endl;
+}

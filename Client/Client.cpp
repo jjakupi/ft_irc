@@ -8,7 +8,10 @@ Client::Client() {
 	this->_loggedIn = false;
 }
 
-Client::Client(std::string nickname, std::string username, int fd) : _nickName(nickname), _userName(username), _fd(fd) {
+Client::Client(std::string nickname, std::string username, int fd)
+	: _fd(fd), _nickName(nickname), _userName(username),
+	  _registered(false), _loggedIn(false), _buffer("")
+{
 	this->_registered = false;
 	this->_loggedIn = false;
 }
