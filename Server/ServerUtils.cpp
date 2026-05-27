@@ -3,10 +3,14 @@
 
 Client *Server::getClient(int fd) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 	for (size_t i = 0; i < _clients.size(); i++) {
 =======
 	for (size_t i; i < _clients.size(); i++) {
 >>>>>>> f32decf (serverUtils)
+=======
+	for (size_t i = 0; i < _clients.size(); i++) {
+>>>>>>> 902fe50 (parsed the cleancommand)
 		if (_clients[i].getFd() == fd)
 			return (&_clients[i]);
 	}
@@ -78,12 +82,19 @@ void	Server::receiveFromClient(int fd)
 	if (bytes > 0)
 	{
 		std::string msg(buf.data(), bytes);
-		std::cout << "Client " << fd << " sent: " << msg << std::endl;
+		//std::cout << "Client " << fd << " sent: " << msg << std::endl;
 
 		// later:
-		//Client *client = Fd(fd);
-		// client->appendBuffer(msg);
-		// extract commands
+		Client *client = getClient(fd);
+		client->appendBuffer(msg);
+		while (client->hasCompleteCommand())
+		{
+			std::string command = client->popCommand();
+			command = client->cleanCommand(command);
+			if (!command.empty())
+				std::cout << "COMMAND=[" << command << "] from client: " << fd << std::endl;
+		}
+
 	}
 	else if (bytes == 0)
 	{
