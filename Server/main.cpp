@@ -10,6 +10,10 @@ int	main(int argc, char **argv)
 
 	int port = std::atoi(argv[1]);
 	std::string password = argv[2];
+	if (password[0] == ':') {
+		std::cerr << "Error: password cannot start with ':'" << std::endl;
+		return (1);
+	}
 
 	Server server(port, password);
 

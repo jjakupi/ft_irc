@@ -1,0 +1,55 @@
+#include "../Server/Server.hpp"
+#include "Replies.hpp"
+
+// PASS
+
+void Server::pass(std::string cmd, int fd) {
+	if (cmd.size() <= 5) {
+		sendResponse(fd, ERR_NEEDMOREPARAMS(cmd));
+		return ;
+	}
+	Client *client = getClient(fd);
+	if (!client)
+		return ;
+	std::string mdp = cmd.substr(5);
+	if (mdp[0] == ':')
+		mdp = mdp.substr(1);
+	if (!client->getRegistered()) {
+		if (mdp == _password)
+			client->setRegistered(true);
+		else {
+			sendResponse(fd, ERR_WRONGPASSWORD);
+			return ;
+		}
+	}
+	else {
+		sendResponse(fd, ERR_ALREADYREGISTERED(client->getNickName()));
+		return ;
+	}
+}
+
+// NICK
+
+void Server::nick(std::string cmd, int fd) {
+	if (cmd.size() <= 5) {
+		sendResponse(fd, ERR_NEEDMOREPARAMS(cmd));
+		return ;
+	}
+	Client *client = getClient(fd);
+	if (!client)
+		return ;
+	std::string nickname = cmd.substr(5);
+	if (!client->getRegistered()) {
+		sendResponse(fd, ERR_NOTREGISTERED(nickname));
+		return ;
+	}
+	if (!isValidNickName(nickname)) {
+		sendResponse(fd, ERR_ERRONEUSNICK(nickname));
+	}
+	if (nickNameAlreadyUsed(nickname)) {
+		sendResponse(fd, ERR_NICKINUSE(nickname));
+	}
+	client->setNickName(nickname);
+	if (!client->getUserName().empty())
+		client->setLoggedIn(true);
+}
