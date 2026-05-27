@@ -44,7 +44,7 @@ bool Server::isValidNickName(std::string nickname)
 		if (!(isalnum(nickname[i]) || (nickname[i] >= 91 && nickname[i] <= 96) || (nickname[i] >= 123 && nickname[i] <= 125) || (nickname[i] == 45)))
 			return false;
 	}
-	return true;
+	return (true);
 }
 
 void	Server::acceptClient()
