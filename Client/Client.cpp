@@ -12,14 +12,21 @@ Client::Client(std::string nickname, std::string username, int fd)
 	: _fd(fd), _nickName(nickname), _userName(username),
 	  _registered(false), _loggedIn(false), _buffer("")
 {
-	this->_registered = false;
-	this->_loggedIn = false;
+		std::cout << "CLIENT CREATED fd=" << _fd
+		<< " registered=" << _registered
+		<< " loggedIn=" << _loggedIn
+		<< std::endl;
+
 }
 Client::Client(int fd)
-	: _fd(fd)
+	: _fd(fd),
+	  _nickName(""),
+	  _userName(""),
+	  _registered(false),
+	  _loggedIn(false),
+	  _buffer("")
 {
 }
-
 Client::Client(const Client &src) {
 	*this = src;
 }

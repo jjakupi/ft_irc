@@ -83,7 +83,7 @@ void	Server::receiveFromClient(int fd)
 			std::string command = client->popCommand();
 			//std::cout << "RAW=[" << command << "]" << std::endl;
 			command = client->cleanCommand(command);
-			//std::cout << "CLEAN COMMAND=[" << command << "]" << std::endl;
+			std::cout << "CLEAN COMMAND=[" << command << "]" << std::endl;
 			if (!command.empty())
 			{
 				this->getCommand(command, fd);
@@ -134,6 +134,8 @@ void Server::getCommand(std::string command, int fd)
 		this->pass(command, fd);
 	else if(cmdName == "NICK")
 		this->nick(command, fd);
+	else if(cmdName == "USER")
+		this->user(command, fd);
 	else
 		std::cout << "unknown command" << std::endl;
 }

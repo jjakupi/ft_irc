@@ -7,5 +7,6 @@
 #define ERR_NOTREGISTERED(nick) (":server 451 " + nick + " :You have not registered\r\n")
 #define ERR_ERRONEUSNICK(nick) (std::string(":server 432 * ") + nick + " :Erroneous nickname\r\n")
 #define ERR_NICKINUSE(nick) (std::string(":server 433 * ") + nick + " :Nickname is already in use\r\n")
-
+#define RPL_WELCOME(nick, user) \
+	(std::string(":server 001 ") + nick + " :Welcome to the Internet Relay Network " + nick + "!" + user + "\r\n")
 #endif
