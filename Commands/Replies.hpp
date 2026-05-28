@@ -9,4 +9,6 @@
 #define ERR_NICKINUSE(nick) (std::string(":server 433 * ") + nick + " :Nickname is already in use\r\n")
 #define RPL_WELCOME(nick, user) \
 	(std::string(":server 001 ") + nick + " :Welcome to the Internet Relay Network " + nick + "!" + user + "\r\n")
+#define ERR_INVALIDUSERNAME(user) (std::string(":server 468 * ") + user + " :Your username is not valid\r\n")
+
 #endif

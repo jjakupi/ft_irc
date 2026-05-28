@@ -42,6 +42,7 @@ class Server
 		void		sendResponse(int fd, std::string message);
 		void 		addClient(int fd);
 		bool		isValidNickName(std::string nickname);
+		bool		isValidUserName(std::string username);
 		void		getCommand(std::string command, int fd);
 		std::vector<std::string>	splitCommand(std::string cmd);
 		void		tryRegister(Client *client, int fd);
