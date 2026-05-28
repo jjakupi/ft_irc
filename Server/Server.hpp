@@ -11,6 +11,7 @@
 # include <poll.h>
 # include <vector>
 #include <cstdio>
+#include <sstream>
 # include "../Client/Client.hpp"
 
 class Server
@@ -42,6 +43,8 @@ class Server
 		void 		addClient(int fd);
 		bool		isValidNickName(std::string nickname);
 		void		getCommand(std::string command, int fd);
+		std::vector<std::string>	splitCommand(std::string cmd);
+		void		tryRegister(Client *client, int fd);
 
 		void pass(std::string cmd, int fd);
 		void nick(std::string cmd, int fd);
