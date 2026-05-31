@@ -61,6 +61,7 @@ void Server::nick(std::string cmd, int fd) {
 
  void    Server::user(std::string cmd, int fd)
 {
+<<<<<<< HEAD
     Client *client = getClient(fd);
     if (!client)
         return ;
@@ -88,6 +89,23 @@ void Server::nick(std::string cmd, int fd) {
     }
     client->setUserName(args[1]);
     tryRegister(client, fd);
+=======
+	Client *client = getClient(fd);
+	if (!client)
+		return ;
+	std::vector<std::string> args = splitCommand(cmd);
+	if (args.size() < 5) {
+		sendResponse(fd, ERR_NEEDMOREPARAMS(args[0]));
+		return ;
+	}
+
+	if (client->getLoggedIn())
+	{
+
+	}
+	client->setUserName(args[1]);
+	tryRegister(client, fd);
+>>>>>>> 4f28605eb533cbaf2b2636727c5f9f97776befb7
 }
 
 void	Server::join(std::string cmd, int fd)
