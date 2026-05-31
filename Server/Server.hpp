@@ -61,11 +61,12 @@ class Server
 		//privmsg
 		Client 		*getClientNick(std::string nickName);
 
-		void		pass(std::string cmd, int fd);
-		void		nick(std::string cmd, int fd);
-		void		user(std::string cmd, int fd);
-		void		join(std::string cmd, int fd);
-		void		privmsg(std::string cmd, int fd);
+		void pass(std::string cmd, int fd);
+		void nick(std::string cmd, int fd);
+		void user(std::string cmd, int fd);
+		void join(std::string cmd, int fd);
+		void quit(std::string cmd, int fd);
+		void privmsg(std::string cmd, int fd);
 };
 
 #endif

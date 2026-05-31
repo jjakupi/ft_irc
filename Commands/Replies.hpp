@@ -1,10 +1,10 @@
 #ifndef REPLIES_HPP
 #define REPLIES_HPP
 
-#define ERR_NEEDMOREPARAMS(cmd) (":server 461 * " + cmd + " :Not enough parameters\r\n")
-#define ERR_ALREADYREGISTERED(nick) (":server 462 " + nick + " :You may not reregister\r\n")
+#define ERR_NEEDMOREPARAMS(cmd) (std::string(":server 461 * ") + cmd + " :Not enough parameters\r\n")
+#define ERR_ALREADYREGISTERED(nick) (std::string(":server 462 ") + nick + " :You may not reregister\r\n")
 #define ERR_WRONGPASSWORD (":server 464 * :Password incorrect\r\n")
-#define ERR_NOTREGISTERED(nick) (":server 451 " + nick + " :You have not registered\r\n")
+#define ERR_NOTREGISTERED(nick) (std::string(":server 451 ") + nick + " :You have not registered\r\n")
 #define ERR_ERRONEUSNICK(nick) (std::string(":server 432 * ") + nick + " :Erroneous nickname\r\n")
 #define ERR_NICKINUSE(nick) (std::string(":server 433 * ") + nick + " :Nickname is already in use\r\n")
 #define RPL_WELCOME(nick, user) (std::string(":server 001 ") + nick + " :Welcome to the Internet Relay Network " + nick + "!" + user + "\r\n")
@@ -20,5 +20,7 @@
 #define ERR_NORECIPIENT(cmd) (std::string (":server 411 * ") + cmd + ":No recipient given\r\n")
 #define ERR_NOTEXTTOSEND() (":server 412 " ":No text to send")
 #define ERR_NOSUCHNICK(nick) (":srver 401 " + nick +" :No such nickname\r\n")
+#define ERR_INVALIDUSERNAME(user) (std::string(":server 468 * ") + user + " :Your username is not valid\r\n")
+#define RPL_QUIT(nick, user, reason) (std::string(":") + nick + "!" + user + "@localhost QUIT :" + reason + "\r\n")
 
 #endif

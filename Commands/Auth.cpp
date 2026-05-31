@@ -48,13 +48,14 @@ void Server::nick(std::string cmd, int fd) {
 	}
 	if (!isValidNickName(nickname)) {
 		sendResponse(fd, ERR_ERRONEUSNICK(nickname));
+		return ;
 	}
 	if (nickNameAlreadyUsed(nickname)) {
 		sendResponse(fd, ERR_NICKINUSE(nickname));
+		return ;
 	}
 	client->setNickName(nickname);
-	if (!client->getUserName().empty())
-		client->setLoggedIn(true);
+	tryRegister(client, fd);
 }
 
 // USER
@@ -89,5 +90,3 @@ void Server::nick(std::string cmd, int fd) {
     client->setUserName(args[1]);
     tryRegister(client, fd);
 }
-
-

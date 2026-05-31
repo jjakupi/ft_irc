@@ -94,6 +94,8 @@ void Server::getCommand(std::string command, int fd)
 		this->join(command, fd);
 	else if(cmdName == "PRIVMSG")
 		this->privmsg(command, fd);
+	else if(cmdName == "QUIT")
+		this->quit(command, fd);
 	else
 		std::cout << "unknown command" << std::endl;
 }
