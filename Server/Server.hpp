@@ -55,11 +55,13 @@ class Server
 		std::string	normalizeChannelName(std::string channelName);
 		std::string	createJoinMessage(Client *client, std::string channelName);
 		std::string	getChannelNames(Channel *channel);
+		Client		*getClientByNick(std::string nickname);
 		void pass(std::string cmd, int fd);
 		void nick(std::string cmd, int fd);
 		void user(std::string cmd, int fd);
 		void join(std::string cmd, int fd);
 		void quit(std::string cmd, int fd);
+		void kick(std::string cmd, int fd);
 };
 
 #endif
