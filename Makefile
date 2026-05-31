@@ -11,7 +11,8 @@ SRC = Server/main.cpp \
 	Server/ServerUtils.cpp \
 	Commands/Auth.cpp \
 	Client/Client.cpp \
-	Client/ClientUtils.cpp
+	Client/ClientUtils.cpp \
+	Channel/Channel.cpp
 
 OBJ = $(SRC:.cpp=.o)
 

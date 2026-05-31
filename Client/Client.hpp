@@ -40,6 +40,7 @@ class Client {
 		std::string	cleanspaces(std::string command);
 		std::string	cleanCommand(std::string command);
 		std::string	getCommand(std::string command, int fd);
+		std::string::size_type	findTrailingColon(std::string command);
 };
 
 #endif

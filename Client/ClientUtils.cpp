@@ -58,20 +58,31 @@ std::string	Client::cleanspaces(std::string command)
 	return result;
 }
 
-std::string	Client::cleanCommand(std::string command)
+std::string::size_type	Client::findTrailingColon(std::string command)
 {
-	std::string::size_type pos = command.find(':');
-	if(pos == std::string::npos)
+	for (std::string::size_type i = 0; i < command.size(); i++)
 	{
-		return cleanspaces(command);
+		if (command[i] == ':' && (i == 0 || command[i - 1] == ' '))
+			return (i);
 	}
-	else
-	{
-		std::string before = command.substr(0, pos);
-		std::string after = command.substr(pos);
-		before = cleanspaces(before);
-		return before + " " + after;
-	}
+	return (std::string::npos);
 }
 
+std::string	Client::cleanCommand(std::string command)
+{
+	std::string::size_type pos = findTrailingColon(command);
+
+	if (pos == std::string::npos)
+		return (cleanspaces(command));
+
+	std::string before = command.substr(0, pos);
+	std::string after = command.substr(pos);
+
+	before = cleanspaces(before);
+
+	if (before.empty())
+		return (after);
+
+	return (before + " " + after);
+}
 
