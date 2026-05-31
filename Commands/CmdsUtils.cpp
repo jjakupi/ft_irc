@@ -103,3 +103,81 @@ void	Server::tryRegister(Client *client, int fd)
 	}
 }
 
+bool	Server::isValidChannelName(std::string channelName)
+{
+	if (channelName.empty())
+		return (false);
+	if (channelName.size() < 2)
+		return (false);
+	if (channelName.size() > 50)
+		return (false);
+	if (channelName[0] != '#' && channelName[0] != '&'
+		&& channelName[0] != '+' && channelName[0] != '!')
+		return (false);
+	if (channelName.find(':') != std::string::npos)
+		return (false);
+	if (channelName.find(' ') != std::string::npos)
+		return (false);
+	if (channelName.find('\a') != std::string::npos)
+		return (false);
+	if (channelName.find('\t') != std::string::npos)
+		return (false);
+	if (channelName.find(',') != std::string::npos)
+		return (false);
+	return (true);
+}
+
+std::string Server::normalizeChannelName(std::string channelName)
+{
+	for(size_t i = 0 ; i < channelName.size(); i++)
+	{
+		channelName[i] = std::toupper(channelName[i]);
+	}
+	return channelName;
+}
+
+std::string	Server::getChannelNames(Channel *channel)
+{
+	std::vector<int>	users;
+	std::string			names;
+	Client				*client;
+
+	if (!channel)
+		return ("");
+
+	users = channel->getUsers();
+	for (size_t i = 0; i < users.size(); i++)
+	{
+		users[i] = users[i];
+		client = getClient(users[i]);
+		if (!client)
+			continue ;
+
+		if (!names.empty())
+			names += " ";
+
+		if (channel->isOperator(users[i]))
+			names += "@";
+
+		names += client->getNickName();
+	}
+	return (names);
+}
+
+Client *Server::getClientByNick(std::string nickname) {
+	for (size_t i = 0; i < _clients.size(); i++) {
+		if (_clients[i].getNickName() == nickname)
+			return &_clients[i];
+	}
+	return NULL;
+}
+
+void Channel::removeUser(int fd) {
+	std::vector<int>::iterator it = std::find(_users.begin(), _users.end(), fd);
+	if (it != _users.end())
+		_users.erase(it);
+
+	std::vector<int>::iterator it2 = std::find(_operators.begin(), _operators.end(), fd);
+	if (it2 != _operators.end())
+		_operators.erase(it2);
+}
