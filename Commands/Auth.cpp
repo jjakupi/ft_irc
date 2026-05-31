@@ -61,19 +61,12 @@ void Server::nick(std::string cmd, int fd) {
 
 void	Server::user(std::string cmd, int fd)
 {
-	if (cmd.size() <= 5) {
-		sendResponse(fd, ERR_NEEDMOREPARAMS(cmd));
-		return ;
-	}
 	Client *client = getClient(fd);
 	if (!client)
 		return ;
-
 	std::vector<std::string> args = splitCommand(cmd);
-
-	if (args.size() < 5)
-	{
-		sendResponse(fd, ERR_NEEDMOREPARAMS(cmd));
+	if (args.size() < 5) {
+		sendResponse(fd, ERR_NEEDMOREPARAMS(args[0]));
 		return ;
 	}
 
@@ -81,7 +74,6 @@ void	Server::user(std::string cmd, int fd)
 	{
 
 	}
-
 	client->setUserName(args[1]);
 	tryRegister(client, fd);
 }
