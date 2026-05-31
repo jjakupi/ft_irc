@@ -10,6 +10,8 @@ SRC = Server/main.cpp \
 	Commands/AuthUtils.cpp \
 	Server/ServerUtils.cpp \
 	Commands/Auth.cpp \
+	Commands/Join.cpp \
+	Commands/Quit.cpp \
 	Client/Client.cpp \
 	Client/ClientUtils.cpp \
 	Channel/Channel.cpp

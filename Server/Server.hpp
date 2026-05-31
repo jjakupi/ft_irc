@@ -59,6 +59,7 @@ class Server
 		void nick(std::string cmd, int fd);
 		void user(std::string cmd, int fd);
 		void join(std::string cmd, int fd);
+		void quit(std::string cmd, int fd);
 };
 
 #endif
