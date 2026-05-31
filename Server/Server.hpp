@@ -46,6 +46,7 @@ class Server
 		void 		addClient(int fd);
 		void		addChannel(std::string channelName);
 		bool		isValidNickName(std::string nickname);
+		bool		isValidUserName(std::string username);
 		void		getCommand(std::string command, int fd);
 		std::vector<std::string>	splitCommand(std::string cmd);
 		void		tryRegister(Client *client, int fd);

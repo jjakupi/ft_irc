@@ -59,31 +59,35 @@ void Server::nick(std::string cmd, int fd) {
 
 // USER
 
-void	Server::user(std::string cmd, int fd)
+ void    Server::user(std::string cmd, int fd)
 {
-	if (cmd.size() <= 5) {
-		sendResponse(fd, ERR_NEEDMOREPARAMS(cmd));
-		return ;
-	}
-	Client *client = getClient(fd);
-	if (!client)
-		return ;
-
-	std::vector<std::string> args = splitCommand(cmd);
-
-	if (args.size() < 5)
-	{
-		sendResponse(fd, ERR_NEEDMOREPARAMS(cmd));
-		return ;
-	}
-
-	if (client->getLoggedIn())
-	{
-
-	}
-
-	client->setUserName(args[1]);
-	tryRegister(client, fd);
+    Client *client = getClient(fd);
+    if (!client)
+        return ;
+    std::vector<std::string> args = splitCommand(cmd);
+    if (args.size() < 5) {
+        sendResponse(fd, ERR_NEEDMOREPARAMS(args[0]));
+        return ;
+    }
+    std::string nickname;
+    if (client->getNickName().empty())
+        nickname = "*";
+    else
+        nickname = client->getNickName();
+    if (!client->getRegistered()) {
+        sendResponse(fd, ERR_NOTREGISTERED(nickname));
+        return ;
+    }
+    if (!client->getUserName().empty()) {
+        sendResponse(fd, ERR_ALREADYREGISTERED(nickname));
+        return ;
+    }
+    if (!isValidUserName(args[1])) {
+        sendResponse(fd, ERR_INVALIDUSERNAME(args[1]));
+        return ;
+    }
+    client->setUserName(args[1]);
+    tryRegister(client, fd);
 }
 
 void	Server::join(std::string cmd, int fd)

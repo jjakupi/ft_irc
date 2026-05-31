@@ -41,8 +41,18 @@ bool Server::isValidNickName(std::string nickname)
 		return false;
 	if (!((nickname[0] >= 65 && nickname[0] <= 122) || (nickname[0] >= 91 && nickname[0] <= 96) || (nickname[0] >= 123 && nickname[0] <= 125)))
 		return false;
-	for (size_t i = 0; i < nickname.size(); i++) {
+	for (size_t i = 1; i < nickname.size(); i++) {
 		if (!(isalnum(nickname[i]) || (nickname[i] >= 91 && nickname[i] <= 96) || (nickname[i] >= 123 && nickname[i] <= 125) || (nickname[i] == 45)))
+			return false;
+	}
+	return (true);
+}
+
+bool Server::isValidUserName(std::string username) {
+	if(username.empty())
+		return false;
+	for (size_t i = 0; i < username.size(); i++) {
+		if ((username[i] >= 0 && username[i] <= 32) || username[i] == 64)
 			return false;
 	}
 	return (true);
@@ -51,11 +61,30 @@ bool Server::isValidNickName(std::string nickname)
 std::vector<std::string>	Server::splitCommand(std::string cmd)
 {
 	std::vector<std::string>	args;
-	std::istringstream		iss(cmd);
-	std::string				word;
+	size_t					i;
+	size_t					start;
 
-	while (iss >> word)
-		args.push_back(word);
+	i = 0;
+	while (i < cmd.size())
+	{
+		while (i < cmd.size() && cmd[i] == ' ')
+			i++;
+
+		if (i >= cmd.size())
+			break ;
+
+		if (cmd[i] == ':')
+		{
+			args.push_back(cmd.substr(i + 1));
+			break ;
+		}
+
+		start = i;
+		while (i < cmd.size() && cmd[i] != ' ')
+			i++;
+
+		args.push_back(cmd.substr(start, i - start));
+	}
 	return (args);
 }
 

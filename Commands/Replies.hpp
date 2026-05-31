@@ -12,5 +12,7 @@
 #define RPL_JOIN(nick, user, channel) (std::string(":") + nick + "!" + user + "@localhost JOIN " + channel + "\r\n")
 #define RPL_NAMREPLY(nick, channel, names) (std::string(":server 353 ") + nick + " = " + channel + " :" + names + "\r\n")
 #define RPL_ENDOFNAMES(nick, channel) (std::string(":server 366 ") + nick + " " + channel + " :End of /NAMES list\r\n")
+#define RPL_WELCOME(nick, user) (std::string(":server 001 ") + nick + " :Welcome to the Internet Relay Network " + nick + "!" + user + "\r\n")
+#define ERR_INVALIDUSERNAME(user) (std::string(":server 468 * ") + user + " :Your username is not valid\r\n")
 
 #endif
