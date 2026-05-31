@@ -14,5 +14,9 @@
 #define RPL_ENDOFNAMES(nick, channel) (std::string(":server 366 ") + nick + " " + channel + " :End of /NAMES list\r\n")
 #define ERR_INVALIDUSERNAME(user) (std::string(":server 468 * ") + user + " :Your username is not valid\r\n")
 #define RPL_QUIT(nick, user, reason) (std::string(":") + nick + "!" + user + "@localhost QUIT :" + reason + "\r\n")
+#define ERR_NOSUCHCHANNEL(channel) (std::string(":server 403 * ") + channel + " :No such channel\r\n")
+#define ERR_CHANOPRIVSNEEDED(channel) (std::string(":server 482 * ") + channel + " :You're not channel operator\r\n")
+#define ERR_USERNOTINCHANNEL(nick, channel) (std::string(":server 441 ") + nick + " " + channel + " :They aren't on that channel\r\n")
+#define RPL_KICK(kicker, user, channel, target, reason) (std::string(":") + kicker + "!" + user + "@localhost KICK " + channel + " " + target + " :" + reason + "\r\n")
 
 #endif
