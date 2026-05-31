@@ -57,10 +57,3 @@ void Server::kick(std::string cmd, int fd) {
 		channel->addOperator(channel->getUsers()[0]);
 }
 
-Client *Server::getClientByNick(std::string nickname) {
-	for (size_t i = 0; i < _clients.size(); i++) {
-		if (_clients[i].getNickName() == nickname)
-			return &_clients[i];
-	}
-	return NULL;
-}

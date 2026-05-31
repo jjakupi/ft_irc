@@ -49,13 +49,3 @@ void Server::quit(std::string cmd, int fd) {
 
 	close(fd);
 }
-
-void Channel::removeUser(int fd) {
-	std::vector<int>::iterator it = std::find(_users.begin(), _users.end(), fd);
-	if (it != _users.end())
-		_users.erase(it);
-
-	std::vector<int>::iterator it2 = std::find(_operators.begin(), _operators.end(), fd);
-	if (it2 != _operators.end())
-		_operators.erase(it2);
-}
