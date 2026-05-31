@@ -90,6 +90,24 @@ void Server::getCommand(std::string command, int fd)
 		this->nick(command, fd);
 	else if(cmdName == "USER")
 		this->user(command, fd);
+	else if(cmdName == "JOIN")
+		this->join(command, fd);
 	else
 		std::cout << "unknown command" << std::endl;
+}
+
+Channel	*Server::getChannel(std::string channelName)
+{
+	for (size_t i = 0; i < _channels.size(); i++)
+	{
+		if (_channels[i].getChannelName() == channelName)
+			return (&_channels[i]);
+	}
+	return (NULL);
+}
+
+void Server::addChannel(std::string channelName)
+{
+	Channel newChannel(channelName);
+	_channels.push_back(newChannel);
 }
