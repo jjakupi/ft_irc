@@ -29,6 +29,7 @@ class Channel
 	bool		isOperator(int fd) const;
 	bool		isValidChannelName(std::string channelName);
 	std::vector<int>	getUsers() const;
+	void		removeUser(int fd);
 };
 
 #endif
