@@ -14,5 +14,11 @@
 #define RPL_ENDOFNAMES(nick, channel) (std::string(":server 366 ") + nick + " " + channel + " :End of /NAMES list\r\n")
 #define RPL_WELCOME(nick, user) (std::string(":server 001 ") + nick + " :Welcome to the Internet Relay Network " + nick + "!" + user + "\r\n")
 #define ERR_INVALIDUSERNAME(user) (std::string(":server 468 * ") + user + " :Your username is not valid\r\n")
+#define ERR_CANNOTSENDTOCHAN(channel) (std::string(":server 442 ") + channel + ":Cannot send to channel\r\n")
+#define ERR_NOSUCHCHANNEL(channel) (std::string (":server 403 ") + channel + ":No such channel\r\n")
+#define RPL_PRIVMSG(nick, user, target, message) (std::string(":") + nick + "!" + user + "@localhost PRIVMSG " + target + " :" + message + "\r\n")
+#define ERR_NORECIPIENT(cmd) (std::string (":server 411 * ") + cmd + ":No recipient given\r\n")
+#define ERR_NOTEXTTOSEND() (":server 412 " ":No text to send")
+#define ERR_NOSUCHNICK(nick) (":srver 401 " + nick +" :No such nickname\r\n")
 
 #endif

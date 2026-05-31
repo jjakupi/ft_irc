@@ -23,7 +23,6 @@ Channel &Channel::operator=(const Channel&src)
 		this->_channelName = src._channelName;
 		this->_users = src._users;
 		this->_operators = src._operators;
-
 	}
 	return *this;
 }

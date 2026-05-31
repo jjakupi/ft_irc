@@ -50,15 +50,22 @@ class Server
 		void		getCommand(std::string command, int fd);
 		std::vector<std::string>	splitCommand(std::string cmd);
 		void		tryRegister(Client *client, int fd);
+
+		//channel
 		Channel		*getChannel(std::string channelName);
 		bool		isValidChannelName(std::string channelName);
 		std::string	normalizeChannelName(std::string channelName);
 		std::string	createJoinMessage(Client *client, std::string channelName);
 		std::string	getChannelNames(Channel *channel);
-		void pass(std::string cmd, int fd);
-		void nick(std::string cmd, int fd);
-		void user(std::string cmd, int fd);
-		void join(std::string cmd, int fd);
+
+		//privmsg
+		Client 		*getClientNick(std::string nickName);
+
+		void		pass(std::string cmd, int fd);
+		void		nick(std::string cmd, int fd);
+		void		user(std::string cmd, int fd);
+		void		join(std::string cmd, int fd);
+		void		privmsg(std::string cmd, int fd);
 };
 
 #endif

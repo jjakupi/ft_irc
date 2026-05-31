@@ -92,15 +92,19 @@ void Server::getCommand(std::string command, int fd)
 		this->user(command, fd);
 	else if(cmdName == "JOIN")
 		this->join(command, fd);
+	else if(cmdName == "PRIVMSG")
+		this->privmsg(command, fd);
 	else
 		std::cout << "unknown command" << std::endl;
 }
 
 Channel	*Server::getChannel(std::string channelName)
 {
+	std::string searchedName = normalizeChannelName(channelName);
+
 	for (size_t i = 0; i < _channels.size(); i++)
 	{
-		if (_channels[i].getChannelName() == channelName)
+		if (normalizeChannelName(_channels[i].getChannelName()) == searchedName)
 			return (&_channels[i]);
 	}
 	return (NULL);

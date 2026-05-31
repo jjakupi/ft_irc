@@ -148,7 +148,6 @@ std::string	Server::getChannelNames(Channel *channel)
 	users = channel->getUsers();
 	for (size_t i = 0; i < users.size(); i++)
 	{
-		users[i] = users[i];
 		client = getClient(users[i]);
 		if (!client)
 			continue ;
