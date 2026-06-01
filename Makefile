@@ -7,9 +7,10 @@ SRC = Server/main.cpp \
 	Server/Server.cpp \
 	Server/Init_Socket.cpp \
 	Server/Run.cpp \
-	Commands/AuthUtils.cpp \
+	Commands/CmdsUtils.cpp \
 	Server/ServerUtils.cpp \
 	Commands/Auth.cpp \
+	Commands/Kick.cpp \
 	Commands/Join.cpp \
 	Commands/Quit.cpp \
 	Client/Client.cpp \

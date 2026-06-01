@@ -20,6 +20,7 @@ class Channel
 		Channel &operator=(const Channel &src);
 		~Channel();
 
+	std::vector<int>	getUsers() const;
 	std::string getChannelName() const;
 	void 		setChannel(std::string name);
 	void		addUser(int fd);
@@ -28,7 +29,6 @@ class Channel
 	bool		hasOperator(int fd) const;
 	bool		isOperator(int fd) const;
 	bool		isValidChannelName(std::string channelName);
-	std::vector<int>	getUsers() const;
 	void		removeUser(int fd);
 };
 

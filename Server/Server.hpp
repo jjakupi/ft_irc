@@ -59,7 +59,7 @@ class Server
 		std::string	getChannelNames(Channel *channel);
 
 		//privmsg
-		Client 		*getClientNick(std::string nickName);
+		Client		*getClientNick(std::string nickName);
 
 		void pass(std::string cmd, int fd);
 		void nick(std::string cmd, int fd);
@@ -67,6 +67,7 @@ class Server
 		void join(std::string cmd, int fd);
 		void quit(std::string cmd, int fd);
 		void privmsg(std::string cmd, int fd);
+		void kick(std::string cmd, int fd);
 };
 
 #endif

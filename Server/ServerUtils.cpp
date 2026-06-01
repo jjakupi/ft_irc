@@ -96,6 +96,8 @@ void Server::getCommand(std::string command, int fd)
 		this->privmsg(command, fd);
 	else if(cmdName == "QUIT")
 		this->quit(command, fd);
+	else if(cmdName == "KICK")
+		this->kick(command, fd);
 	else
 		std::cout << "unknown command" << std::endl;
 }
