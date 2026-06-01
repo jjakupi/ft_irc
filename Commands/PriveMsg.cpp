@@ -73,8 +73,12 @@ void Server::privmsg(std::string cmd, int fd)
 	else
 	{
 		std::string nickName = args[1];
+		if (!isValidNickName(nickName))
+		{
+			sendResponse(fd, ERR_ERRONEUSNICK(nickName));
+			return ;
+		}
 		Client *clientNick = getClientNick(nickName);
-
 		if (!clientNick)
 		{
 			sendResponse(fd, ERR_NOSUCHNICK(nickName));

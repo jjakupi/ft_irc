@@ -3,11 +3,13 @@
 Channel::Channel()
 {
 	this->_channelName = "";
+	this->_topic = "";
+	this->_hasTopic = false;
 }
 
-Channel::Channel(std::string channelname ) : _channelName(channelname)
+Channel::Channel(std::string channelname)
+	: _channelName(channelname), _topic(""), _hasTopic(false)
 {
-
 }
 
 Channel::Channel(const Channel&src)
@@ -23,6 +25,8 @@ Channel &Channel::operator=(const Channel&src)
 		this->_channelName = src._channelName;
 		this->_users = src._users;
 		this->_operators = src._operators;
+		this->_topic = src._topic;
+		this->_hasTopic = src._hasTopic;
 	}
 	return *this;
 }
@@ -76,4 +80,20 @@ void	Channel::addOperator(int fd)
 std::vector<int>	Channel::getUsers() const
 {
 	return (_users);
+}
+
+bool	Channel::hasTopic() const
+{
+	return (_hasTopic);
+}
+
+std::string Channel::getTopic() const
+{
+	return this->_topic;
+}
+
+void Channel::setTopic(std::string topic)
+{
+	this->_topic = topic;
+	this->_hasTopic = true;
 }
