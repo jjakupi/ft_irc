@@ -32,5 +32,7 @@
 #define RPL_TOPIC(nick, channel, topic) (std::string(":server 332 ") + nick + " " + channel + " :" + topic + "\r\n")
 #define RPL_NOTOPIC(nick, channel) (std::string(":server 331 ") + nick + " " + channel + " :No topic is set\r\n")
 #define RPL_TOPIC_CHANGE(nick, user, channel, topic) (std::string(":") + nick + "!" + user + "@localhost TOPIC " + channel + " :" + topic + "\r\n")
-
+#define ERR_UNKNOWNMODE(nick, modechar) (std::string(":server 472 ") + nick + " " + modechar + " :is unknown mode char to me\r\n")
+#define ERR_INVITEONLYCHAN(nick, channel) (std::string(":server 473 ") + nick + " " + channel + " :Cannot join channel (+i)\r\n")
+#define RPL_MODE(nick, user, channel, mode) (std::string(":") + nick + "!" + user + " MODE " + channel + " " + mode + "\r\n")
 #endif

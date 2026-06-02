@@ -57,7 +57,7 @@ class Server
 		std::string	normalizeChannelName(std::string channelName);
 		std::string	createJoinMessage(Client *client, std::string channelName);
 		std::string	getChannelNames(Channel *channel);
-
+		bool		isValidModeCommand(std::string command);
 		//privmsg
 		Client		*getClientNick(std::string nickName);
 
@@ -70,6 +70,7 @@ class Server
 		void kick(std::string cmd, int fd);
 		void invite(std::string cmd, int fd);
 		void topic(std::string cmd, int fd);
+		void mode(std::string cmd, int fd);
 };
 
 #endif

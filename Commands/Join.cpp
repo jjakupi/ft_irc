@@ -47,6 +47,21 @@ void	Server::join(std::string cmd, int fd)
 		channel = getChannel(channelName);
 
 	}
+	else if(channel->isInvitedOnly())
+	{
+		if (channel->hasUser(fd))
+		{
+			std::cout << "fd " << fd << " is already in channel" << std::endl;
+			return ;
+		}
+		if(!channel->hasInvitedUsers(fd))
+		{
+			sendResponse(fd, ERR_INVITEONLYCHAN(client->getNickName(), channelName));
+			return;
+		}
+		else
+			channel->addUser(fd);
+	}
 	else
 	{
 		if (channel->hasUser(fd))
