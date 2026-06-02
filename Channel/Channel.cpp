@@ -5,10 +5,11 @@ Channel::Channel()
 	this->_channelName = "";
 	this->_topic = "";
 	this->_hasTopic = false;
+	this->_invitedOnly = false;
 }
 
 Channel::Channel(std::string channelname)
-	: _channelName(channelname), _topic(""), _hasTopic(false)
+	: _channelName(channelname), _topic(""), _hasTopic(false), _invitedOnly(false)
 {
 }
 
@@ -27,6 +28,7 @@ Channel &Channel::operator=(const Channel&src)
 		this->_operators = src._operators;
 		this->_topic = src._topic;
 		this->_hasTopic = src._hasTopic;
+		this->_invitedOnly = src._invitedOnly;
 	}
 	return *this;
 }
@@ -96,4 +98,35 @@ void Channel::setTopic(std::string topic)
 {
 	this->_topic = topic;
 	this->_hasTopic = true;
+}
+
+bool Channel::hasInvitedUsers(int fd) const
+{
+	for(size_t i = 0; i < _invitedUsers.size(); i++)
+	{
+		if(_invitedUsers[i] == fd)
+			return true;
+	}
+	return false;
+}
+
+void	Channel::addInvitedUser(int fd)
+{
+	if (!hasInvitedUsers(fd))
+		_invitedUsers.push_back(fd);
+}
+
+std::vector<int>	Channel::getInvitedUsers() const
+{
+	return this->_invitedUsers;
+}
+
+bool	Channel::isInvitedOnly() const
+{
+	return (_invitedOnly);
+}
+
+void Channel::setInviteOnly(bool value)
+{
+	_invitedOnly = value;
 }

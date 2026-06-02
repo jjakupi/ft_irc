@@ -102,6 +102,8 @@ void Server::getCommand(std::string command, int fd)
 		this->invite(command, fd);
 	else if(cmdName == "TOPIC")
 		this->topic(command, fd);
+	else if(cmdName == "MODE")
+		this->mode(command, fd);
 	else
 		std::cout << "unknown command" << std::endl;
 }

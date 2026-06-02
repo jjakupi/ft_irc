@@ -54,6 +54,15 @@ void	Server::invite(std::string cmd, int fd)
 		sendResponse(fd, ERR_USERONCHANNEL(targetNick, channelName));
 		return ;
 	}
+	if(channel->isInvitedOnly())
+	{
+		if(!channel->isOperator(fd))
+		{
+			sendResponse(fd, ERR_CHANOPRIVSNEEDED(cmd));
+			return ;
+		}
+		channel->addInvitedUser(targetClient->getFd());
+	}
 	sendResponse(fd, RPL_INVITING(client->getNickName(), channelName, targetNick));
 	sendResponse(targetClient->getFd(), RPL_INVITE(client->getNickName(), client->getUserName(), targetNick, channelName));
 }

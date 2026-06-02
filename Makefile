@@ -18,7 +18,8 @@ SRC = Server/main.cpp \
 	Channel/Channel.cpp \
 	Commands/PriveMsg.cpp \
 	Commands/Invite.cpp \
-	Commands/Topic.cpp
+	Commands/Topic.cpp \
+	Commands/Mode.cpp
 
 OBJ = $(SRC:.cpp=.o)
 

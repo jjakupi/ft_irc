@@ -14,6 +14,8 @@ class Channel
 		std::vector<int>	_operators;
 		std::string			_topic;
 		bool				_hasTopic;
+		std::vector<int>	_invitedUsers;
+		bool				_invitedOnly;
 
 	public:
 		Channel();
@@ -35,6 +37,11 @@ class Channel
 	void				removeUser(int fd);
 	bool				hasTopic() const;
 	void				setTopic(std::string topic);
+	bool				hasInvitedUsers(int fd) const;
+	std::vector<int>	getInvitedUsers() const;
+	void				addInvitedUser(int fd);
+	bool				isInvitedOnly() const;
+	void 				setInviteOnly(bool value);
 };
 
 #endif
