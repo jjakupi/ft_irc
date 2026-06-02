@@ -98,6 +98,10 @@ void Server::getCommand(std::string command, int fd)
 		this->quit(command, fd);
 	else if(cmdName == "KICK")
 		this->kick(command, fd);
+	else if(cmdName == "INVITE")
+		this->invite(command, fd);
+	else if(cmdName == "TOPIC")
+		this->topic(command, fd);
 	else
 		std::cout << "unknown command" << std::endl;
 }

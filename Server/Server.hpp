@@ -68,6 +68,8 @@ class Server
 		void quit(std::string cmd, int fd);
 		void privmsg(std::string cmd, int fd);
 		void kick(std::string cmd, int fd);
+		void invite(std::string cmd, int fd);
+		void topic(std::string cmd, int fd);
 };
 
 #endif
