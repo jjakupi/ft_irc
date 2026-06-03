@@ -18,6 +18,7 @@ bool	Server::isValidModeCommand(std::string command)
 	}
 	return true;
 }
+
 void Server::mode(std::string cmd, int fd)
 {
 	Client *client = getClient(fd);
@@ -74,6 +75,40 @@ void Server::mode(std::string cmd, int fd)
 	if (modeChar.size() >= 2 && modeChar[0] == '-' && modeChar[1] == 'i')
 	{
 		channel->setInviteOnly(false);
+		for (size_t i = 0; i < users.size(); i++)
+		{
+			sendResponse(users[i], RPL_MODE(client->getNickName(),client->getUserName(), channelName, modeChar));
+		}
+	}
+	if(modeChar.size() >= 2 && modeChar[0] == '+' && modeChar[1] == 'l')
+	{
+		if (args.size() < 4)
+		{
+			sendResponse(fd, ERR_NEEDMOREPARAMS(cmd));
+			return ;
+		}
+		if(channel->hasLimit())
+		std::string modeChar = args[2];
+		std::stringstream ss(args[3]);
+		int limit;
+		if (!(ss >> limit) || limit <= 0)
+		{
+			sendResponse(fd, ERR_INVALIDMODEPARAM(client->getNickName(), channelName, "+l", args[3]));
+			return ;
+		}
+		channel->setHasLimit(true);
+		channel->setLimit(limit);
+		std::cout << "the limit = " << limit << std::endl;
+		std::cout << "users size = " << users.size() << std::endl;
+		for (size_t i = 0; i < users.size(); i++)
+		{
+			sendResponse(users[i], RPL_MODE_PARAM(client->getNickName(), client->getUserName(), channelName, "+l", args[3]));
+		}
+	}
+	if(modeChar.size() >= 2 && modeChar[0] == '-' && modeChar[1] == 'l')
+	{
+		channel->setHasLimit(false);
+		channel->setLimit(0);
 		for (size_t i = 0; i < users.size(); i++)
 		{
 			sendResponse(users[i], RPL_MODE(client->getNickName(),client->getUserName(), channelName, modeChar));

@@ -35,4 +35,7 @@
 #define ERR_UNKNOWNMODE(nick, modechar) (std::string(":server 472 ") + nick + " " + modechar + " :is unknown mode char to me\r\n")
 #define ERR_INVITEONLYCHAN(nick, channel) (std::string(":server 473 ") + nick + " " + channel + " :Cannot join channel (+i)\r\n")
 #define RPL_MODE(nick, user, channel, mode) (std::string(":") + nick + "!" + user + " MODE " + channel + " " + mode + "\r\n")
+#define ERR_CHANNELISFULL(nick, channel) (std::string(":server 471 ") + nick + " " + channel + " :Cannot join channel (+l)\r\n")
+#define ERR_INVALIDMODEPARAM(nick, channel, mode, param) (std::string(":server 696 ") + nick + " " + channel + " " + mode + " " + param + " :Invalid mode parameter (l)\r\n")
+#define RPL_MODE_PARAM(nick, user, channel, mode, param) (std::string(":") + nick + "!" + user + " MODE " + channel + " " + mode + " " + param + "\r\n")
 #endif

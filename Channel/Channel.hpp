@@ -16,6 +16,8 @@ class Channel
 		bool				_hasTopic;
 		std::vector<int>	_invitedUsers;
 		bool				_invitedOnly;
+		size_t				_Limit;
+		bool				_hasLimit;
 
 	public:
 		Channel();
@@ -35,13 +37,21 @@ class Channel
 	bool				isOperator(int fd) const;
 	bool				isValidChannelName(std::string channelName);
 	void				removeUser(int fd);
+	//topic
 	bool				hasTopic() const;
 	void				setTopic(std::string topic);
+	//invite
 	bool				hasInvitedUsers(int fd) const;
 	std::vector<int>	getInvitedUsers() const;
 	void				addInvitedUser(int fd);
 	bool				isInvitedOnly() const;
 	void 				setInviteOnly(bool value);
+	//limit
+	bool				hasLimit() const;
+	size_t				getLimit() const;
+	void				setHasLimit(bool value);
+	void				setLimit(size_t limit);
+
 };
 
 #endif
