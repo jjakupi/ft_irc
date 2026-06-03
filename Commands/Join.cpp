@@ -47,42 +47,38 @@ void	Server::join(std::string cmd, int fd)
 		channel = getChannel(channelName);
 
 	}
-	else if(channel->isInvitedOnly())
-	{
-		if (channel->hasUser(fd))
-		{
-			std::cout << "fd " << fd << " is already in channel" << std::endl;
-			return ;
-		}
-		if(!channel->hasInvitedUsers(fd))
-		{
-			sendResponse(fd, ERR_INVITEONLYCHAN(client->getNickName(), channelName));
-			return;
-		}
-		else
-			channel->addUser(fd);
-	}
 	else
 	{
 		if (channel->hasUser(fd))
 		{
-			std::cout << "fd " << fd << " is already in channel" << std::endl;
+			sendResponse(fd, ERR_USERONCHANNEL(client->getNickName(), channelName));
 			return ;
 		}
-		channel->addUser(fd);
-		std::cout << "fd " << fd << " added as USER only" << std::endl;
-	}
-		std::cout << "Total channels = " << _channels.size() << std::endl;
-		std::cout << "Channel Name = " << channelName << std::endl;
-
-		std::vector<int> users = channel->getUsers();
-
-		for (size_t i = 0; i < users.size(); i++)
+		if(channel->isInvitedOnly() && (!channel->hasInvitedUsers(fd)))
 		{
-			sendResponse(users[i], RPL_JOIN(client->getNickName(), client->getUserName(), channelName));
+			sendResponse(fd, ERR_INVITEONLYCHAN(client->getNickName(), channelName));
+			return;
 		}
-		std::string names = getChannelNames(channel);
-		sendResponse(fd, RPL_NAMREPLY(client->getNickName(), channelName, names));
-		sendResponse(fd, RPL_ENDOFNAMES(client->getNickName(), channelName));
+		std::vector<int> users = channel->getUsers();
+		if (channel->hasLimit() && users.size() >= channel->getLimit())
+		{
+			sendResponse(fd, ERR_CHANNELISFULL(client->getNickName(), channelName));
+			return ;
+		}
+		else
+			channel->addUser(fd);
+	}
+	std::cout << "fd " << fd << " added as USER only" << std::endl;
+	std::cout << "Total channels = " << _channels.size() << std::endl;
+	std::cout << "Channel Name = " << channelName << std::endl;
+	std::vector<int> users = channel->getUsers();
+	std::cout << "Total users = " << users.size() << "in channel =" << channelName << std::endl;
+	for (size_t i = 0; i < users.size(); i++)
+	{
+		sendResponse(users[i], RPL_JOIN(client->getNickName(), client->getUserName(), channelName));
+	}
+	std::string names = getChannelNames(channel);
+	sendResponse(fd, RPL_NAMREPLY(client->getNickName(), channelName, names));
+	sendResponse(fd, RPL_ENDOFNAMES(client->getNickName(), channelName));
 }
 
