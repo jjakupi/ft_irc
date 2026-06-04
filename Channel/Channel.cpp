@@ -83,6 +83,18 @@ void	Channel::addOperator(int fd)
 		_operators.push_back(fd);
 }
 
+void	Channel::removeOperator(int fd)
+{
+	for (size_t i = 0; i < _operators.size(); i++)
+	{
+		if (_operators[i] == fd)
+		{
+			_operators.erase(_operators.begin() + i);
+			return ;
+		}
+	}
+}
+
 std::vector<int>	Channel::getUsers() const
 {
 	return (_users);

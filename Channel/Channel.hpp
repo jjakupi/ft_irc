@@ -32,6 +32,7 @@ class Channel
 	void 				setChannel(std::string name);
 	void				addUser(int fd);
 	void				addOperator(int fd);
+	void				removeOperator(int fd);
 	bool				hasUser(int fd) const;
 	bool				hasOperator(int fd) const;
 	bool				isOperator(int fd) const;
