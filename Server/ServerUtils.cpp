@@ -105,7 +105,7 @@ void Server::getCommand(std::string command, int fd)
 	else if(cmdName == "MODE")
 		this->mode(command, fd);
 	else
-		std::cout << "unknown command" << std::endl;
+		sendResponse(fd, ERR_UNKNOWNCOMMAND(cmdName));
 }
 
 Channel	*Server::getChannel(std::string channelName)

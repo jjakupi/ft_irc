@@ -114,4 +114,72 @@ void Server::mode(std::string cmd, int fd)
 			sendResponse(users[i], RPL_MODE(client->getNickName(),client->getUserName(), channelName, modeChar));
 		}
 	}
+	if(modeChar.size() >= 2 && modeChar[0] == '+' && modeChar[1] == 'o')
+	{
+		if (args.size() < 4)
+		{
+			sendResponse(fd, ERR_NEEDMOREPARAMS(cmd));
+			return ;
+		}
+		std::string targetNick = args[3];
+		if (!isValidNickName(targetNick))
+		{
+			sendResponse(fd, ERR_ERRONEUSNICK(targetNick));
+			return ;
+		}
+		Client *targetClient = getClientNick(targetNick);
+		if (!targetClient)
+		{
+			sendResponse(fd, ERR_NOSUCHNICK(targetNick));
+			return ;
+		}
+		if (!channel->hasUser(targetClient->getFd()))
+		{
+			sendResponse(fd, ERR_USERNOTINCHANNEL(targetNick, channelName));
+			return ;
+		}
+		if(channel->isOperator(targetClient->getFd()))
+		{
+			return;
+		}
+		channel->addOperator(targetClient->getFd());
+		for (size_t i = 0; i < users.size(); i++)
+		{
+			sendResponse(users[i], RPL_MODE_PARAM(client->getNickName(), client->getUserName(), channelName, "+o", args[3]));
+		}
+	}
+	if(modeChar.size() >= 2 && modeChar[0] == '-' && modeChar[1] == 'o')
+	{
+		if (args.size() < 4)
+		{
+			sendResponse(fd, ERR_NEEDMOREPARAMS(cmd));
+			return ;
+		}
+		std::string targetNick = args[3];
+		if (!isValidNickName(targetNick))
+		{
+			sendResponse(fd, ERR_ERRONEUSNICK(targetNick));
+			return ;
+		}
+		Client *targetClient = getClientNick(targetNick);
+		if (!targetClient)
+		{
+			sendResponse(fd, ERR_NOSUCHNICK(targetNick));
+			return ;
+		}
+		if (!channel->hasUser(targetClient->getFd()))
+		{
+			sendResponse(fd, ERR_NOTONCHANNEL(targetNick, channelName));
+			return ;
+		}
+		if(!channel->isOperator(targetClient->getFd()))
+		{
+			return;
+		}
+		channel->removeOperator(targetClient->getFd());
+		for (size_t i = 0; i < users.size(); i++)
+		{
+			sendResponse(users[i], RPL_MODE_PARAM(client->getNickName(), client->getUserName(), channelName, "o", args[3]));
+		}
+	}
 }

@@ -38,4 +38,7 @@
 #define ERR_CHANNELISFULL(nick, channel) (std::string(":server 471 ") + nick + " " + channel + " :Cannot join channel (+l)\r\n")
 #define ERR_INVALIDMODEPARAM(nick, channel, mode, param) (std::string(":server 696 ") + nick + " " + channel + " " + mode + " " + param + " :Invalid mode parameter (l)\r\n")
 #define RPL_MODE_PARAM(nick, user, channel, mode, param) (std::string(":") + nick + "!" + user + " MODE " + channel + " " + mode + " " + param + "\r\n")
+#define ERR_UNKNOWNCOMMAND(cmd) (std::string(":server 421 ") + cmd + " :Unknown command\r\n")
+#define ERR_USERNOTINCHANNEL(nick, channel) (std::string(":server 441 ") + nick + " " + channel + " :They aren't on that channel\r\n")
+
 #endif
