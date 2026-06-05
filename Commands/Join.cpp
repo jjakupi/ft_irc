@@ -1,7 +1,4 @@
 #include "../Server/Server.hpp"
-#include "Replies.hpp"
-#include "../Client/Client.hpp"
-#include "../Channel/Channel.hpp"
 
 void	Server::join(std::string cmd, int fd)
 {

@@ -33,3 +33,16 @@ Server::~Server()
 	if (_serverFd != -1)
 		close(_serverFd);
 }
+
+void	Server::cleanup()
+{
+	for (size_t i = 0; i < _pollFds.size(); i++)
+	{
+		if (_pollFds[i].fd >= 0)
+			close(_pollFds[i].fd);
+	}
+
+	_pollFds.clear();
+	_clients.clear();
+	_channels.clear();
+}

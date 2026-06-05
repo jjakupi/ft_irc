@@ -1,6 +1,4 @@
 #include "../Server/Server.hpp"
-#include "Replies.hpp"
-#include "../Client/Client.hpp"
 
 bool	isChannelTarget(std::string target)
 {

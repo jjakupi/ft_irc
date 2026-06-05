@@ -1,11 +1,15 @@
 #include "Server.hpp"
 
+extern volatile sig_atomic_t g_running;
+
 int Server::run()
 {
-	while (true)
+	while (g_running)
 	{
 		if (poll(_pollFds.data(), _pollFds.size(), -1) == -1)
 		{
+			if (errno == EINTR)
+				break ;
 			perror("poll");
 			return (-1);
 		}

@@ -1,5 +1,4 @@
 #include "Server.hpp"
-#include "../Client/Client.hpp"
 
 void	Server::acceptClient()
 {
@@ -29,13 +28,10 @@ void	Server::receiveFromClient(int fd)
 	{
 		std::string msg(buf.data(), bytes);
 		Client *client = getClient(fd);
-		//std::cout << "MSG=[" << msg << "]" << std::endl;
 		client->appendBuffer(msg);
-		//std::cout << "BUFFER=[" << client->getBuffer() << "]" << std::endl;
 		while (client->hasCompleteCommand())
 		{
 			std::string command = client->popCommand();
-			//std::cout << "RAW=[" << command << "]" << std::endl;
 			command = client->cleanCommand(command);
 			std::cout << "CLEAN COMMAND=[" << command << "]" << std::endl;
 			if (!command.empty())
@@ -47,41 +43,20 @@ void	Server::receiveFromClient(int fd)
 	else if (bytes == 0)
 	{
 		std::cout << "Client " << fd << " disconnected" << std::endl;
-		removeClient(fd);
+		quit("QUIT :Client disconnected", fd);
 	}
 	else
 	{
 		perror("recv");
-		removeClient(fd);
+		quit("QUIT :Connection error", fd);
 	}
 }
 
-void	Server::removeClient(int fd)
-{
-	close(fd);
-
-	for (size_t i = 0; i < _pollFds.size(); i++)
-	{
-		if (_pollFds[i].fd == fd)
-		{
-			_pollFds.erase(_pollFds.begin() + i);
-			break;
-		}
-	}
-
-	for (size_t i = 0; i < _clients.size(); i++)
-	{
-		if (_clients[i].getFd() == fd)
-		{
-			_clients.erase(_clients.begin() + i);
-			break;
-		}
-	}
-}
 // end ServerUtils
 void Server::getCommand(std::string command, int fd)
 {
 	std::string cmdName = command.substr(0, command.find(' '));
+	std::string cmdOriginal = cmdName;
 	for(size_t i = 0; i < cmdName.size(); i++)
 		cmdName[i] = std::toupper(cmdName[i]);
 	if (cmdName == "PASS")
@@ -105,7 +80,7 @@ void Server::getCommand(std::string command, int fd)
 	else if(cmdName == "MODE")
 		this->mode(command, fd);
 	else
-		sendResponse(fd, ERR_UNKNOWNCOMMAND(cmdName));
+		sendResponse(fd, ERR_UNKNOWNCOMMAND(cmdOriginal));
 }
 
 Channel	*Server::getChannel(std::string channelName)
