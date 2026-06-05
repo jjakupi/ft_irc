@@ -1,6 +1,4 @@
 #include "../Server/Server.hpp"
-#include "Replies.hpp"
-#include "../Client/Client.hpp"
 
 Client *Server::getClient(int fd) {
 	for (size_t i = 0; i < _clients.size(); ++i) {

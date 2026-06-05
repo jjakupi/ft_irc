@@ -12,6 +12,8 @@
 # include <vector>
 # include <cstdio>
 # include <sstream>
+# include <csignal>
+# include <cerrno>
 # include "../Client/Client.hpp"
 # include "../Channel/Channel.hpp"
 # include "../Commands/Replies.hpp"
@@ -29,7 +31,7 @@ class Server
 
 		void		acceptClient();
 		void		receiveFromClient(int fd);
-		void		removeClient(int fd);
+
 	public:
 		Server();
 		Server(int port, std::string password);
@@ -60,6 +62,7 @@ class Server
 		bool		isValidModeCommand(std::string command);
 		//privmsg
 		Client		*getClientNick(std::string nickName);
+		void		cleanup();
 
 		void pass(std::string cmd, int fd);
 		void nick(std::string cmd, int fd);

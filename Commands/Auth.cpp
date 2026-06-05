@@ -1,7 +1,4 @@
 #include "../Server/Server.hpp"
-#include "Replies.hpp"
-#include "../Client/Client.hpp"
-
 // PASS
 
 void Server::pass(std::string cmd, int fd) {

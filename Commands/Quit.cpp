@@ -1,7 +1,4 @@
 #include "../Server/Server.hpp"
-#include "Replies.hpp"
-#include "../Client/Client.hpp"
-#include "../Channel/Channel.hpp"
 
 void Server::quit(std::string cmd, int fd) {
 	Client *client = getClient(fd);
@@ -46,6 +43,5 @@ void Server::quit(std::string cmd, int fd) {
 			break;
 		}
 	}
-
 	close(fd);
 }
