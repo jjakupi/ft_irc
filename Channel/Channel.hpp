@@ -18,6 +18,8 @@ class Channel
 		bool				_invitedOnly;
 		size_t				_Limit;
 		bool				_hasLimit;
+		bool				_hasKey;
+		std::string			_key;
 
 	public:
 		Channel();
@@ -28,7 +30,6 @@ class Channel
 
 	std::vector<int>	getUsers() const;
 	std::string 		getChannelName() const;
-	std::string 		getTopic() const;
 	void 				setChannel(std::string name);
 	void				addUser(int fd);
 	void				addOperator(int fd);
@@ -40,6 +41,7 @@ class Channel
 	void				removeUser(int fd);
 	//topic
 	bool				hasTopic() const;
+	std::string 		getTopic() const;
 	void				setTopic(std::string topic);
 	//invite
 	bool				hasInvitedUsers(int fd) const;
@@ -52,7 +54,11 @@ class Channel
 	size_t				getLimit() const;
 	void				setHasLimit(bool value);
 	void				setLimit(size_t limit);
-
+	//key
+	bool 				hasKey() const;
+	std::string 		getKey() const;
+	void				setKey(std::string key);
+	void 				removeKey();
 };
 
 #endif

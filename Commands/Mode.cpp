@@ -98,8 +98,6 @@ void Server::mode(std::string cmd, int fd)
 		}
 		channel->setHasLimit(true);
 		channel->setLimit(limit);
-		std::cout << "the limit = " << limit << std::endl;
-		std::cout << "users size = " << users.size() << std::endl;
 		for (size_t i = 0; i < users.size(); i++)
 		{
 			sendResponse(users[i], RPL_MODE_PARAM(client->getNickName(), client->getUserName(), channelName, "+l", args[3]));
@@ -179,7 +177,42 @@ void Server::mode(std::string cmd, int fd)
 		channel->removeOperator(targetClient->getFd());
 		for (size_t i = 0; i < users.size(); i++)
 		{
-			sendResponse(users[i], RPL_MODE_PARAM(client->getNickName(), client->getUserName(), channelName, "o", args[3]));
+			sendResponse(users[i], RPL_MODE_PARAM(client->getNickName(), client->getUserName(), channelName, "-o", args[3]));
+		}
+	}
+	if(!channel->isOperator(fd))
+	{
+		sendResponse(fd, ERR_CHANOPRIVSNEEDED(cmd));
+		return ;
+	}
+	if(modeChar.size() >= 2 && modeChar[0] == '+' && modeChar[1] == 'k')
+	{
+		if (args.size() < 4)
+		{
+			sendResponse(fd, ERR_NEEDMOREPARAMS(cmd));
+			return ;
+		}
+		if(!channel->hasKey())
+		{
+			std::string key = args[3];
+			channel->setKey(key);
+			for (size_t i = 0; i < users.size(); i++)
+			{
+				sendResponse(users[i], RPL_MODE_PARAM(client->getNickName(), client->getUserName(), channelName, "+k", args[3]));
+			}
+		}
+		else
+			sendResponse(fd, ERR_KEYSET(client->getNickName(), channelName));
+	}
+	if(modeChar.size() >= 2 && modeChar[0] == '-' && modeChar[1] == 'k')
+	{
+		if (channel->hasKey())
+		{
+			channel->removeKey();
+			for (size_t i = 0; i < users.size(); i++)
+			{
+				sendResponse(users[i], RPL_MODE_PARAM(client->getNickName(), client->getUserName(), channelName, "-k", args[3]));
+			}
 		}
 	}
 }
