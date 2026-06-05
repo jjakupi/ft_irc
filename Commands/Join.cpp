@@ -31,7 +31,7 @@ void	Server::join(std::string cmd, int fd)
 		sendResponse(fd, ERR_BADCHANMASK(channelName));
 		return;
 	}
-	channelName = normalizeChannelName(channelName);
+	//channelName = normalizeChannelName(channelName);
 	Channel *channel = getChannel(channelName);
 
 	if (!channel)
@@ -45,7 +45,6 @@ void	Server::join(std::string cmd, int fd)
 		client->getUserName();
 		client->getNickName();
 		channel = getChannel(channelName);
-
 	}
 	else
 	{
@@ -64,6 +63,14 @@ void	Server::join(std::string cmd, int fd)
 		{
 			sendResponse(fd, ERR_CHANNELISFULL(client->getNickName(), channelName));
 			return ;
+		}
+		if(channel->hasKey())
+		{
+			if (args.size() < 3 || args[2] != channel->getKey())
+			{
+				sendResponse(fd, ERR_BADCHANNELKEY(client->getNickName(), channelName));
+				return ;
+			}
 		}
 		else
 			channel->addUser(fd);

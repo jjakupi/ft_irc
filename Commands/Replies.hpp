@@ -40,5 +40,6 @@
 #define RPL_MODE_PARAM(nick, user, channel, mode, param) (std::string(":") + nick + "!" + user + " MODE " + channel + " " + mode + " " + param + "\r\n")
 #define ERR_UNKNOWNCOMMAND(cmd) (std::string(":server 421 ") + cmd + " :Unknown command\r\n")
 #define ERR_USERNOTINCHANNEL(nick, channel) (std::string(":server 441 ") + nick + " " + channel + " :They aren't on that channel\r\n")
-
+#define ERR_BADCHANNELKEY(nick, channel) (std::string(":server 475 ") + nick + " " + channel + " :Cannot join channel (+k)\r\n")
+#define ERR_KEYSET(nick, channel) (std::string(":server 467 ") + nick + " " + channel + " :Channel key already set\r\n")
 #endif

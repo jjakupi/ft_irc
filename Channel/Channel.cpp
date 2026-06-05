@@ -8,10 +8,12 @@ Channel::Channel()
 	this->_invitedOnly = false;
 	this->_hasLimit = false;
 	this->_Limit = 0;
+	this->_hasKey = false;
+	this->_key = "";
 }
 
 Channel::Channel(std::string channelname)
-	: _channelName(channelname), _topic(""), _hasTopic(false), _invitedOnly(false), _Limit(0), _hasLimit(false)
+	: _channelName(channelname), _topic(""), _hasTopic(false), _invitedOnly(false), _Limit(0), _hasLimit(false), _hasKey(false), _key("")
 {
 }
 
@@ -33,14 +35,13 @@ Channel &Channel::operator=(const Channel&src)
 		this->_invitedOnly = src._invitedOnly;
 		this->_hasLimit = src._hasLimit;
 		this->_Limit = src._Limit;
+		this->_hasKey = src._hasKey;
+		this->_key = src._key;
 	}
 	return *this;
 }
 
-Channel::~Channel()
-{
-
-}
+Channel::~Channel(){}
 
 std::string Channel::getChannelName() const
 {
@@ -165,4 +166,26 @@ void Channel::setHasLimit(bool value)
 void Channel::setLimit(size_t limit)
 {
 	_Limit = limit;
+}
+
+bool Channel::hasKey() const
+{
+	return(_hasKey);
+}
+
+std::string Channel::getKey() const
+{
+	return this->_key;
+}
+
+void Channel::setKey(std::string key)
+{
+	this->_key = key;
+	this->_hasKey = true;
+}
+
+void Channel::removeKey()
+{
+	this->_key = "";
+	this->_hasKey = false;
 }
