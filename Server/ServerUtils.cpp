@@ -2,12 +2,17 @@
 
 void	Server::acceptClient()
 {
-	{
 		int clientFd = accept(_serverFd, NULL, NULL);
 		if (clientFd == -1)
 		{
 			perror("accept");
 				return;
+		}
+		if (fcntl(clientFd, F_SETFL, O_NONBLOCK) == -1)
+		{
+			perror("fcntl");
+			close(clientFd);
+			return ;
 		}
 		std::cout << "New client connected, fd = "<< clientFd << std::endl;
 		pollfd clientPoll;
@@ -16,7 +21,6 @@ void	Server::acceptClient()
 		clientPoll.revents = 0;
 		_pollFds.push_back(clientPoll);
 		_clients.push_back(Client(clientFd));
-	}
 }
 
 void	Server::receiveFromClient(int fd)
@@ -28,6 +32,8 @@ void	Server::receiveFromClient(int fd)
 	{
 		std::string msg(buf.data(), bytes);
 		Client *client = getClient(fd);
+		if (!client)
+			return ;
 		client->appendBuffer(msg);
 		while (client->hasCompleteCommand())
 		{
@@ -47,6 +53,8 @@ void	Server::receiveFromClient(int fd)
 	}
 	else
 	{
+		if (errno == EAGAIN || errno == EWOULDBLOCK)
+			return ;
 		perror("recv");
 		quit("QUIT :Connection error", fd);
 	}
