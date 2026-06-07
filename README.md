@@ -95,11 +95,14 @@ make fclean
 
 ### IRC Protocol References
 
+- [Socket documentation](https://pubs.opengroup.org/onlinepubs/009696599/functions/socket.html)
+- [Modern IRC Client Protocol](https://modern.ircdocs.horse/)
 - [RFC 1459 — Internet Relay Chat Protocol](https://datatracker.ietf.org/doc/html/rfc1459)
 - [RFC 2810 — IRC Architecture](https://datatracker.ietf.org/doc/html/rfc2810)
 - [RFC 2811 — IRC Channel Management](https://datatracker.ietf.org/doc/html/rfc2811)
 - [RFC 2812 — IRC Client Protocol](https://datatracker.ietf.org/doc/html/rfc2812)
 - [Beej's Guide to Network Programming](https://beej.us/guide/bgnet/html/)
+- [Error Replies](https://www.irchelp.org/protocol/rfc/chapter6.html)
 
 ### Useful Tools
 
