@@ -25,20 +25,20 @@ void	Server::invite(std::string cmd, int fd)
 	Client *targetClient = getClientNick(targetNick);
 	if (!targetClient)
 	{
-		sendResponse(fd, ERR_NOSUCHNICK(targetNick));
+		sendResponse(fd, ERR_NOSUCHNICK(client->getNickName(), targetNick));
 		return ;
 	}
 
 	std::string channelName = args[2];
 	if (!isValidChannelName(channelName))
 	{
-		sendResponse(fd, ERR_BADCHANMASK(channelName));
+		sendResponse(fd, ERR_BADCHANMASK(client->getNickName(), channelName));
 		return ;
 	}
 	Channel *channel = getChannel(channelName);
 	if(!channel)
 	{
-		sendResponse(fd, ERR_NOSUCHCHANNEL(channelName));
+		sendResponse(fd, ERR_NOSUCHCHANNEL(client->getNickName(), channelName));
 		return;
 	}
 	if (!channel->hasUser(fd))
@@ -48,14 +48,14 @@ void	Server::invite(std::string cmd, int fd)
 	}
 	if (channel->hasUser(targetClient->getFd()))
 	{
-		sendResponse(fd, ERR_USERONCHANNEL(targetNick, channelName));
+		sendResponse(fd, ERR_USERONCHANNEL(client->getNickName(), targetNick, channelName));
 		return ;
 	}
 	if(channel->isInvitedOnly())
 	{
 		if(!channel->isOperator(fd))
 		{
-			sendResponse(fd, ERR_CHANOPRIVSNEEDED(cmd));
+			sendResponse(fd, ERR_CHANOPRIVSNEEDED(client->getNickName(), channelName));
 			return ;
 		}
 		channel->addInvitedUser(targetClient->getFd());

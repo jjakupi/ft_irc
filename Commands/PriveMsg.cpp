@@ -30,12 +30,12 @@ void Server::privmsg(std::string cmd, int fd)
 	std::vector<std::string> args = splitCommand(cmd);
 	if (args.size() < 2)
 	{
-		sendResponse(fd, ERR_NORECIPIENT("PRIVMSG"));
+		sendResponse(fd, ERR_NORECIPIENT(client->getNickName(), "PRIVMSG"));
 		return ;
 	}
 	if (args.size() < 3)
 	{
-		sendResponse(fd, ERR_NOTEXTTOSEND());
+		sendResponse(fd, ERR_NOTEXTTOSEND(client->getNickName()));
 		return ;
 	}
 	std::string target = args[1];
@@ -46,17 +46,17 @@ void Server::privmsg(std::string cmd, int fd)
 		Channel *channel = getChannel(channelName);
 		if (!isValidChannelName(channelName))
 		{
-			sendResponse(fd, ERR_BADCHANMASK(channelName));
+			sendResponse(fd, ERR_BADCHANMASK(client->getNickName(), channelName));
 			return ;
 		}
 		if(!channel)
 		{
-			sendResponse(fd, ERR_NOSUCHCHANNEL(channelName));
+			sendResponse(fd, ERR_NOSUCHCHANNEL(client->getNickName(), channelName));
 			return;
 		}
 		if (!channel->hasUser(fd))
 		{
-			sendResponse(fd, ERR_CANNOTSENDTOCHAN(channelName));
+			sendResponse(fd, ERR_CANNOTSENDTOCHAN(client->getNickName(), channelName));
 			return ;
 		}
 		std::string message = args[2];
@@ -79,7 +79,7 @@ void Server::privmsg(std::string cmd, int fd)
 		Client *clientNick = getClientNick(nickName);
 		if (!clientNick)
 		{
-			sendResponse(fd, ERR_NOSUCHNICK(nickName));
+			sendResponse(fd, ERR_NOSUCHNICK(client->getNickName(), nickName));
 			return ;
 		}
 		std::string message = args[2];

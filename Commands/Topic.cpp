@@ -19,13 +19,13 @@ void	Server::topic(std::string cmd, int fd)
 	std::string channelName = args[1];
 	if (!isValidChannelName(channelName))
 	{
-		sendResponse(fd, ERR_BADCHANMASK(channelName));
+		sendResponse(fd, ERR_BADCHANMASK(client->getNickName(), channelName));
 		return ;
 	}
 	Channel *channel = getChannel(channelName);
 	if(!channel)
 	{
-		sendResponse(fd, ERR_NOSUCHCHANNEL(channelName));
+		sendResponse(fd, ERR_NOSUCHCHANNEL(client->getNickName(), channelName));
 		return;
 	}
 	if (!channel->hasUser(fd))

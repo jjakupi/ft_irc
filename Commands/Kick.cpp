@@ -21,12 +21,12 @@ void Server::kick(std::string cmd, int fd) {
 
 	Channel *channel = getChannel(normalizeChannelName(args[1]));
 	if (!channel) {
-		sendResponse(fd, ERR_NOSUCHCHANNEL(args[1]));
+		sendResponse(fd, ERR_NOSUCHCHANNEL(client->getNickName(), args[1]));
 		return ;
 	}
 
 	if (!channel->isOperator(fd)) {
-		sendResponse(fd, ERR_CHANOPRIVSNEEDED(args[1]));
+		sendResponse(fd, ERR_CHANOPRIVSNEEDED(client->getNickName(), args[1]));
 		return ;
 	}
 
