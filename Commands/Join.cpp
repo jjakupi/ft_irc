@@ -25,7 +25,7 @@ void	Server::join(std::string cmd, int fd)
 	std::string channelName = args[1];
 	if (!isValidChannelName(channelName))
 	{
-		sendResponse(fd, ERR_BADCHANMASK(channelName));
+		sendResponse(fd, ERR_BADCHANMASK(client->getNickName(), channelName));
 		return;
 	}
 	//channelName = normalizeChannelName(channelName);
@@ -47,7 +47,7 @@ void	Server::join(std::string cmd, int fd)
 	{
 		if (channel->hasUser(fd))
 		{
-			sendResponse(fd, ERR_USERONCHANNEL(client->getNickName(), channelName));
+			sendResponse(fd, ERR_USERONCHANNEL(client->getNickName(), client->getNickName(), channelName));
 			return ;
 		}
 		if(channel->isInvitedOnly() && (!channel->hasInvitedUsers(fd)))

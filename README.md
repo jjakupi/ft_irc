@@ -30,8 +30,8 @@ IRC (Internet Relay Chat) is a real-time text communication protocol created in 
 | `PART` | Leave a channel |
 | `PRIVMSG` | Send a message to a user or channel |
 | `QUIT` | Disconnect from the server |
+| `INVITE` | Invite a user to a channel |
 | `KICK` | Remove a user from a channel (operator only) |
-| `INVITE` | Invite a user to a channel (operator only) |
 | `TOPIC` | View or set the channel topic (operator only) |
 | `MODE` | Set channel modes: `i`, `t`, `k`, `o`, `l` (operator only) |
 
