@@ -88,7 +88,15 @@ void Server::getCommand(std::string command, int fd)
 	else if(cmdName == "MODE")
 		this->mode(command, fd);
 	else
-		sendResponse(fd, ERR_UNKNOWNCOMMAND(cmdOriginal));
+	{
+		Client *client = getClient(fd);
+		std::string nickName;
+		if (!client || client->getNickName().empty())
+			nickName = "*";
+		else
+			nickName = client->getNickName();
+		sendResponse(fd, ERR_UNKNOWNCOMMAND(nickName, cmdOriginal));
+	}
 }
 
 Channel	*Server::getChannel(std::string channelName)

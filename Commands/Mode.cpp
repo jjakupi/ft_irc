@@ -36,13 +36,13 @@ void Server::mode(std::string cmd, int fd)
 	std::string channelName = args[1];
 	if (!isValidChannelName(channelName))
 	{
-		sendResponse(fd, ERR_BADCHANMASK(channelName));
+		sendResponse(fd, ERR_BADCHANMASK(client->getNickName(), channelName));
 		return ;
 	}
 	Channel *channel = getChannel(channelName);
 	if(!channel)
 	{
-		sendResponse(fd, ERR_NOSUCHCHANNEL(channelName));
+		sendResponse(fd, ERR_NOSUCHCHANNEL(client->getNickName(), channelName));
 		return;
 	}
 	if(!channel->hasUser(fd))
@@ -52,7 +52,7 @@ void Server::mode(std::string cmd, int fd)
 	}
 	if(!channel->isOperator(fd))
 	{
-		sendResponse(fd, ERR_CHANOPRIVSNEEDED(cmd));
+		sendResponse(fd, ERR_CHANOPRIVSNEEDED(client->getNickName(), channelName));
 		return ;
 	}
 	std::string modeChar = args[2];
@@ -126,7 +126,7 @@ void Server::mode(std::string cmd, int fd)
 		Client *targetClient = getClientNick(targetNick);
 		if (!targetClient)
 		{
-			sendResponse(fd, ERR_NOSUCHNICK(targetNick));
+			sendResponse(fd, ERR_NOSUCHNICK(client->getNickName(), targetNick));
 			return ;
 		}
 		if (!channel->hasUser(targetClient->getFd()))
@@ -160,7 +160,7 @@ void Server::mode(std::string cmd, int fd)
 		Client *targetClient = getClientNick(targetNick);
 		if (!targetClient)
 		{
-			sendResponse(fd, ERR_NOSUCHNICK(targetNick));
+			sendResponse(fd, ERR_NOSUCHNICK(client->getNickName(), targetNick));
 			return ;
 		}
 		if (!channel->hasUser(targetClient->getFd()))
@@ -180,7 +180,7 @@ void Server::mode(std::string cmd, int fd)
 	}
 	if(!channel->isOperator(fd))
 	{
-		sendResponse(fd, ERR_CHANOPRIVSNEEDED(cmd));
+		sendResponse(fd, ERR_CHANOPRIVSNEEDED(client->getNickName(), channelName));
 		return ;
 	}
 	if(modeChar.size() >= 2 && modeChar[0] == '+' && modeChar[1] == 'k')
