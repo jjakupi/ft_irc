@@ -3,8 +3,9 @@
 
 # include <iostream>
 # include <string>
-#include <cstring>
+# include <cstring>
 # include <cstdlib>
+# include <fcntl.h>
 # include <sys/socket.h>
 # include <netinet/in.h>
 # include <unistd.h>
