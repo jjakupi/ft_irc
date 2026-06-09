@@ -45,6 +45,11 @@ int	Server::initSocket()
 	serverPoll.events = POLLIN;
 	serverPoll.revents = 0;
 	_pollFds.push_back(serverPoll);
-	std::cout << "Server listening on port " << _port << std::endl;
+	std::cout << "\n====================================" << std::endl;
+	std::cout << "<<<<>>>>Internet Relay Chat<<<<>>>>" << std::endl;
+	std::cout << "<<<<<<>>>>>>IRC-SERVER<<<<<<>>>>>>>" << std::endl;
+	std::cout << "====================================\n" << std::endl;
+	std::cout << YEL << "Server listening on port " << _port << WHI << std::endl;
+	std::cout << "Waiting for clients..." << std::endl;
 	return (0);
 }

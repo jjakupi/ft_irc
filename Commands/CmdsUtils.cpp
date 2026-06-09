@@ -109,8 +109,7 @@ bool	Server::isValidChannelName(std::string channelName)
 		return (false);
 	if (channelName.size() > 50)
 		return (false);
-	if (channelName[0] != '#' && channelName[0] != '&'
-		&& channelName[0] != '+' && channelName[0] != '!')
+	if (channelName[0] != '#')
 		return (false);
 	if (channelName.find(':') != std::string::npos)
 		return (false);

@@ -143,8 +143,9 @@ void Server::mode(std::string cmd, int fd)
 		{
 			sendResponse(users[i], RPL_MODE_PARAM(client->getNickName(), client->getUserName(), channelName, "+o", args[3]));
 		}
+		return ;
 	}
-	if(modeChar.size() >= 2 && modeChar[0] == '-' && modeChar[1] == 'o')
+	if (modeChar.size() >= 2 && modeChar[0] == '-' && modeChar[1] == 'o')
 	{
 		if (args.size() < 4)
 		{
@@ -165,18 +166,20 @@ void Server::mode(std::string cmd, int fd)
 		}
 		if (!channel->hasUser(targetClient->getFd()))
 		{
-			sendResponse(fd, ERR_NOTONCHANNEL(targetNick, channelName));
+			sendResponse(fd, ERR_USERNOTINCHANNEL(targetNick, channelName));
 			return ;
 		}
-		if(!channel->isOperator(targetClient->getFd()))
-		{
-			return;
-		}
+		if (!channel->isOperator(targetClient->getFd()))
+			return ;
+
 		channel->removeOperator(targetClient->getFd());
+
 		for (size_t i = 0; i < users.size(); i++)
 		{
-			sendResponse(users[i], RPL_MODE_PARAM(client->getNickName(), client->getUserName(), channelName, "-o", args[3]));
+			sendResponse(users[i], RPL_MODE_PARAM(client->getNickName(),
+				client->getUserName(), channelName, "-o", args[3]));
 		}
+		return ;
 	}
 	if(!channel->isOperator(fd))
 	{
