@@ -5,6 +5,7 @@
 #include <string>
 #include <algorithm>
 # include <vector>
+# define MAX_CHANNELS 2
 
 class Channel
 {
@@ -35,7 +36,7 @@ class Channel
 	void				addOperator(int fd);
 	void				removeOperator(int fd);
 	bool				hasUser(int fd) const;
-	bool				hasOperator(int fd) const;
+	bool				hasOperators() const;
 	bool				isOperator(int fd) const;
 	bool				isValidChannelName(std::string channelName);
 	void				removeUser(int fd);

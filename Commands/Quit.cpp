@@ -24,7 +24,7 @@ void Server::quit(std::string cmd, int fd) {
 				continue;
 			}
 			else {
-				if (wasOperator)
+				if (wasOperator && !_channels[i].hasOperators())
 					_channels[i].addOperator(_channels[i].getUsers()[0]);
 			}
 		}

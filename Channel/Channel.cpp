@@ -78,6 +78,11 @@ void	Channel::addUser(int fd)
 		_users.push_back(fd);
 }
 
+bool	Channel::hasOperators() const
+{
+	return (!_operators.empty());
+}
+
 void	Channel::addOperator(int fd)
 {
 	if (!isOperator(fd))

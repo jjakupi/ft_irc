@@ -39,5 +39,5 @@
 #define ERR_UNKNOWNCOMMAND(nick, cmd) (std::string(":server 421 ") + nick + " " + cmd + " :Unknown command\r\n")
 #define ERR_BADCHANNELKEY(nick, channel) (std::string(":server 475 ") + nick + " " + channel + " :Cannot join channel (+k)\r\n")
 #define ERR_KEYSET(nick, channel) (std::string(":server 467 ") + nick + " " + channel + " :Channel key already set\r\n")
-
+#define ERR_TOOMANYCHANNELS(nick, channel) (std::string(":server 405 ") + nick + " " + channel + " :You have joined too many channels\r\n")
 #endif

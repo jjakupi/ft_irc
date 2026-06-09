@@ -5,12 +5,12 @@ void	Server::acceptClient()
 		int clientFd = accept(_serverFd, NULL, NULL);
 		if (clientFd == -1)
 		{
-			perror("accept");
+			std::cerr << "accept error" << std::endl;
 				return;
 		}
 		if (fcntl(clientFd, F_SETFL, O_NONBLOCK) == -1)
 		{
-			perror("fcntl");
+			std::cerr << "fcntl error" << std::endl;
 			close(clientFd);
 			return ;
 		}
@@ -26,7 +26,7 @@ void	Server::acceptClient()
 void	Server::receiveFromClient(int fd)
 {
 	std::vector<char> buf(5000);
-	int bytes = recv(fd, buf.data(), buf.size(), 0);
+	int bytes = recv(fd, &buf[0], buf.size(), 0);
 
 	if (bytes > 0)
 	{
@@ -53,9 +53,7 @@ void	Server::receiveFromClient(int fd)
 	}
 	else
 	{
-		if (errno == EAGAIN || errno == EWOULDBLOCK)
-			return ;
-		perror("recv");
+		std::cerr << "recv error" << std::endl;
 		quit("QUIT :Connection error", fd);
 	}
 }
@@ -115,4 +113,16 @@ void Server::addChannel(std::string channelName)
 {
 	Channel newChannel(channelName);
 	_channels.push_back(newChannel);
+}
+
+int	Server::countClientChannels(int fd)
+{
+	int	count = 0;
+
+	for (size_t i = 0; i < _channels.size(); i++)
+	{
+		if (_channels[i].hasUser(fd))
+			count++;
+	}
+	return (count);
 }

@@ -34,6 +34,19 @@ Server::~Server()
 		close(_serverFd);
 }
 
+volatile sig_atomic_t	Server::_running = 1;
+
+void	Server::handleSignal(int sig)
+{
+	(void)sig;
+	Server::_running = 0;
+}
+
+bool	Server::isRunning()
+{
+	return (Server::_running != 0);
+}
+
 void	Server::cleanup()
 {
 	for (size_t i = 0; i < _pollFds.size(); i++)
@@ -41,7 +54,6 @@ void	Server::cleanup()
 		if (_pollFds[i].fd >= 0)
 			close(_pollFds[i].fd);
 	}
-
 	_pollFds.clear();
 	_clients.clear();
 	_channels.clear();
