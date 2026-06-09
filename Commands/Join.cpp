@@ -69,6 +69,11 @@ void	Server::join(std::string cmd, int fd)
 				return ;
 			}
 		}
+		if (!channel->hasUser(fd) && countClientChannels(fd) >= MAX_CHANNELS)
+		{
+			sendResponse(fd, ERR_TOOMANYCHANNELS(client->getNickName(), channelName));
+			return ;
+		}
 		else
 			channel->addUser(fd);
 	}

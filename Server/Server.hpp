@@ -14,10 +14,14 @@
 # include <cstdio>
 # include <sstream>
 # include <csignal>
-# include <cerrno>
 # include "../Client/Client.hpp"
 # include "../Channel/Channel.hpp"
 # include "../Commands/Replies.hpp"
+
+#define RED "\e[1;31m"
+#define WHI "\e[0;37m"
+#define GRE "\e[1;32m"
+#define YEL "\e[1;33m"
 
 class Server
 {
@@ -33,6 +37,7 @@ class Server
 		void		acceptClient();
 		void		receiveFromClient(int fd);
 
+		static volatile sig_atomic_t	_running;
 	public:
 		Server();
 		Server(int port, std::string password);
@@ -63,7 +68,10 @@ class Server
 		bool		isValidModeCommand(std::string command);
 		//privmsg
 		Client		*getClientNick(std::string nickName);
+		int			countClientChannels(int fd);
 		void		cleanup();
+		static void		handleSignal(int sig);
+		static bool		isRunning();
 
 		void pass(std::string cmd, int fd);
 		void nick(std::string cmd, int fd);

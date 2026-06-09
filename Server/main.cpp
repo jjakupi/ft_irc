@@ -1,13 +1,5 @@
 #include "Server.hpp"
 
-volatile sig_atomic_t	g_running = 1;
-
-void	handleSigint(int sig)
-{
-	(void)sig;
-	g_running = 0;
-}
-
 int	main(int argc, char **argv)
 {
 	if (argc != 3)
@@ -16,7 +8,7 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 
-	signal(SIGINT, handleSigint);
+	signal(SIGINT, Server::handleSignal);
 
 	int port = std::atoi(argv[1]);
 	std::string password = argv[2];

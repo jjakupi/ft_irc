@@ -1,22 +1,16 @@
 #include "Server.hpp"
 
-extern volatile sig_atomic_t g_running;
-
 int	Server::run()
 {
-	while (g_running)
+	while (Server::isRunning())
 	{
-		errno = 0;
 		int ret = poll(&_pollFds[0], _pollFds.size(), -1);
 
 		if (ret == -1)
 		{
-			std::cout << "poll failed, errno = " << errno << std::endl;
-
-			if (errno == EINTR)
+			if (!Server::isRunning())
 				break ;
-
-			perror("poll");
+			std::cerr << "poll error" << std::endl;
 			return (-1);
 		}
 
