@@ -26,7 +26,6 @@
 class Server
 {
 	private:
-		int			_clientFd;
 		int			_serverFd;
 		int			_port;
 		std::string	_password;
@@ -47,7 +46,6 @@ class Server
 
 		int		initSocket();
 		int		run();
-
 		Client		*getClient(int fd);
 		bool		nickNameAlreadyUsed(const std::string &nickname);
 		void		sendResponse(int fd, std::string message);
@@ -67,9 +65,8 @@ class Server
 		std::string	getChannelNames(Channel *channel);
 		bool		isValidModeCommand(std::string command);
 		//privmsg
-		Client		*getClientNick(std::string nickName);
-		int			countClientChannels(int fd);
-		void		cleanup();
+		Client			*getClientNick(std::string nickName);
+		void			cleanup();
 		static void		handleSignal(int sig);
 		static bool		isRunning();
 

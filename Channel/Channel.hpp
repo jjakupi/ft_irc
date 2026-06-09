@@ -5,7 +5,6 @@
 #include <string>
 #include <algorithm>
 # include <vector>
-# define MAX_CHANNELS 2
 
 class Channel
 {

@@ -14,7 +14,7 @@ void	Server::acceptClient()
 			close(clientFd);
 			return ;
 		}
-		std::cout << "New client connected, fd = "<< clientFd << std::endl;
+		std::cout << GRE << "New client connected, fd = " << clientFd << WHI << std::endl;
 		pollfd clientPoll;
 		clientPoll.fd = clientFd;
 		clientPoll.events = POLLIN;
@@ -48,7 +48,7 @@ void	Server::receiveFromClient(int fd)
 	}
 	else if (bytes == 0)
 	{
-		std::cout << "Client " << fd << " disconnected" << std::endl;
+		std::cout << RED << "Client " << fd << " disconnected" << WHI << std::endl;
 		quit("QUIT :Client disconnected", fd);
 	}
 	else
@@ -113,16 +113,4 @@ void Server::addChannel(std::string channelName)
 {
 	Channel newChannel(channelName);
 	_channels.push_back(newChannel);
-}
-
-int	Server::countClientChannels(int fd)
-{
-	int	count = 0;
-
-	for (size_t i = 0; i < _channels.size(); i++)
-	{
-		if (_channels[i].hasUser(fd))
-			count++;
-	}
-	return (count);
 }
