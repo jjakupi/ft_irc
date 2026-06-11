@@ -161,6 +161,30 @@ std::string	Server::getChannelNames(Channel *channel)
 	return (names);
 }
 
+std::string	Server::cleanKey(std::string key)
+{
+	if (!key.empty() && key[0] == ':')
+		key.erase(0, 1);
+	return (key);
+}
+
+bool	Server::isValidChannelKey(const std::string &key)
+{
+	if (key.empty())
+		return (false);
+	if (key[0] == ':')
+		return (false);
+
+	for (size_t i = 0; i < key.length(); i++)
+	{
+		if (std::isspace(static_cast<unsigned char>(key[i])))
+			return (false);
+		if (key[i] == ',')
+			return (false);
+	}
+	return (true);
+}
+
 void Channel::removeUser(int fd) {
 	std::vector<int>::iterator it = std::find(_users.begin(), _users.end(), fd);
 	if (it != _users.end())
@@ -169,4 +193,25 @@ void Channel::removeUser(int fd) {
 	std::vector<int>::iterator it2 = std::find(_operators.begin(), _operators.end(), fd);
 	if (it2 != _operators.end())
 		_operators.erase(it2);
+}
+
+std::vector<std::string>	Server::splitByComma(std::string str)
+{
+	std::vector<std::string>	result;
+	std::string				current;
+
+	for (size_t i = 0; i < str.length(); i++)
+	{
+		if (str[i] == ',')
+		{
+			if (!current.empty())
+				result.push_back(current);
+			current.clear();
+		}
+		else
+			current += str[i];
+	}
+	if (!current.empty())
+		result.push_back(current);
+	return (result);
 }

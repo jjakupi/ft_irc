@@ -14,75 +14,87 @@ void	Server::join(std::string cmd, int fd)
 
 	std::vector<std::string> args = splitCommand(cmd);
 
-	for (size_t i = 0; i < args.size(); i++)
-		std::cout << "args[" << i << "]=[" << args[i] << "]" << std::endl;
 	if (args.size() < 2)
 	{
-		sendResponse(fd, ERR_NEEDMOREPARAMS(cmd));
+		sendResponse(fd, ERR_NEEDMOREPARAMS("JOIN"));
 		return ;
 	}
 
-	std::string channelName = args[1];
+	std::vector<std::string> channels = splitByComma(args[1]);
+	std::vector<std::string> keys;
+
+	if (args.size() >= 3)
+		keys = splitByComma(args[2]);
+
+	for (size_t i = 0; i < channels.size(); i++)
+	{
+		std::string key = "";
+		if (i < keys.size())
+			key = cleanKey(keys[i]);
+		joinOneChannel(client, fd, channels[i], key);
+		if (!getClient(fd))
+			return ;
+	}
+}
+void	Server::joinOneChannel(Client *client, int fd, std::string channelName, std::string key)
+{
+	std::string originalName = channelName;
+	std::string searchName = normalizeChannelName(channelName);
+
 	if (!isValidChannelName(channelName))
 	{
 		sendResponse(fd, ERR_BADCHANMASK(client->getNickName(), channelName));
-		return;
+		return ;
 	}
-	//channelName = normalizeChannelName(channelName);
-	Channel *channel = getChannel(channelName);
+
+	Channel *channel = getChannel(searchName);
 
 	if (!channel)
 	{
-		Channel newChannel(channelName);
-
+		Channel newChannel(originalName);
 		newChannel.addUser(fd);
 		newChannel.addOperator(fd);
-		std::cout << "fd " << fd << " added as USER and OPERATOR" << std::endl;
 		_channels.push_back(newChannel);
-		client->getUserName();
-		client->getNickName();
-		channel = getChannel(channelName);
+		channel = getChannel(searchName);
+		if (!channel)
+			return ;
 	}
 	else
 	{
 		if (channel->hasUser(fd))
 		{
-			sendResponse(fd, ERR_USERONCHANNEL(client->getNickName(), client->getNickName(), channelName));
+			sendResponse(fd, ERR_USERONCHANNEL(client->getNickName(),
+				client->getNickName(), originalName));
 			return ;
 		}
-		if(channel->isInvitedOnly() && (!channel->hasInvitedUsers(fd)))
+		if (channel->isInvitedOnly() && !channel->hasInvitedUsers(fd))
 		{
-			sendResponse(fd, ERR_INVITEONLYCHAN(client->getNickName(), channelName));
-			return;
+			sendResponse(fd, ERR_INVITEONLYCHAN(client->getNickName(), originalName));
+			return ;
 		}
 		std::vector<int> users = channel->getUsers();
 		if (channel->hasLimit() && users.size() >= channel->getLimit())
 		{
-			sendResponse(fd, ERR_CHANNELISFULL(client->getNickName(), channelName));
+			sendResponse(fd, ERR_CHANNELISFULL(client->getNickName(), originalName));
 			return ;
 		}
-		if(channel->hasKey())
+		if (channel->hasKey())
 		{
-			if (args.size() < 3 || args[2] != channel->getKey())
+			if (key.empty() || !isValidChannelKey(key) || key != channel->getKey())
 			{
-				sendResponse(fd, ERR_BADCHANNELKEY(client->getNickName(), channelName));
+				sendResponse(fd, ERR_BADCHANNELKEY(client->getNickName(), originalName));
 				return ;
 			}
 		}
-		else
-			channel->addUser(fd);
+		channel->addUser(fd);
 	}
-	std::cout << "fd " << fd << " added as USER only" << std::endl;
-	std::cout << "Total channels = " << _channels.size() << std::endl;
-	std::cout << "Channel Name = " << channelName << std::endl;
 	std::vector<int> users = channel->getUsers();
-	std::cout << "Total users = " << users.size() << "in channel =" << channelName << std::endl;
-	for (size_t i = 0; i < users.size(); i++)
-	{
-		sendResponse(users[i], RPL_JOIN(client->getNickName(), client->getUserName(), channelName));
-	}
-	std::string names = getChannelNames(channel);
-	sendResponse(fd, RPL_NAMREPLY(client->getNickName(), channelName, names));
-	sendResponse(fd, RPL_ENDOFNAMES(client->getNickName(), channelName));
-}
+	std::string joinMsg = RPL_JOIN(client->getNickName(), client->getUserName(), originalName);
 
+	for (size_t i = 0; i < users.size(); i++)
+		sendResponse(users[i], joinMsg);
+
+	std::string names = getChannelNames(channel);
+	sendResponse(fd, RPL_NAMREPLY(client->getNickName(), originalName, names));
+	sendResponse(fd, RPL_ENDOFNAMES(client->getNickName(), originalName));
+}

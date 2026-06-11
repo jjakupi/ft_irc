@@ -30,7 +30,7 @@ void	Server::receiveFromClient(int fd)
 
 	if (bytes > 0)
 	{
-		std::string msg(buf.data(), bytes);
+		std::string msg(&buf[0], bytes);
 		Client *client = getClient(fd);
 		if (!client)
 			return ;
@@ -41,14 +41,14 @@ void	Server::receiveFromClient(int fd)
 			command = client->cleanCommand(command);
 			std::cout << "CLEAN COMMAND=[" << command << "]" << std::endl;
 			if (!command.empty())
-			{
 				this->getCommand(command, fd);
-			}
+
+			if (!getClient(fd))
+				return ;
 		}
 	}
 	else if (bytes == 0)
 	{
-		std::cout << RED << "Client " << fd << " disconnected" << WHI << std::endl;
 		quit("QUIT :Client disconnected", fd);
 	}
 	else
