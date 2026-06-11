@@ -72,6 +72,7 @@ class Server
 		static void		handleSignal(int sig);
 		static bool		isRunning();
 
+		void cap(std::string cmd, int fd);
 		void joinOneChannel(Client *client, int fd, std::string channelName, std::string key);
 		void pass(std::string cmd, int fd);
 		void nick(std::string cmd, int fd);
@@ -83,6 +84,7 @@ class Server
 		void invite(std::string cmd, int fd);
 		void topic(std::string cmd, int fd);
 		void mode(std::string cmd, int fd);
+		void ping(std::string cmd, int fd);
 };
 
 #endif

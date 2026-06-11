@@ -65,7 +65,11 @@ void Server::getCommand(std::string command, int fd)
 	std::string cmdOriginal = cmdName;
 	for(size_t i = 0; i < cmdName.size(); i++)
 		cmdName[i] = std::toupper(cmdName[i]);
-	if (cmdName == "PASS")
+	if (command == "CAP")
+		this->cap(command, fd);
+	else if (command == "PING")
+		this->ping(command, fd);
+	else if(cmdName == "PASS")
 		this->pass(command, fd);
 	else if(cmdName == "NICK")
 		this->nick(command, fd);

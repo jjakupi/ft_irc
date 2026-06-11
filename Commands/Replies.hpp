@@ -40,4 +40,5 @@
 #define ERR_BADCHANNELKEY(nick, channel) (std::string(":server 475 ") + nick + " " + channel + " :Cannot join channel (+k)\r\n")
 #define ERR_KEYSET(nick, channel) (std::string(":server 467 ") + nick + " " + channel + " :Channel key already set\r\n")
 #define ERR_TOOMANYCHANNELS(nick, channel) (std::string(":server 405 ") + nick + " " + channel + " :You have joined too many channels\r\n")
+#define RPL_CHANNELMODEIS(nick, channel, modes, params) (std::string(":server 324 ") + nick + " " + channel + " " + modes + params + "\r\n")
 #endif

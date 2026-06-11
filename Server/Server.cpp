@@ -58,3 +58,19 @@ void	Server::cleanup()
 	_clients.clear();
 	_channels.clear();
 }
+
+void Server::ping(std::string cmd, int fd)
+{
+	std::vector<std::string> args = splitCommand(cmd);
+
+	if (args.size() >= 2)
+		sendResponse(fd, "PONG " + args[1] + "\r\n");
+	else
+		sendResponse(fd, "PONG :server\r\n");
+}
+
+void Server::cap(std::string cmd, int fd)
+{
+	(void)cmd;
+	sendResponse(fd, "CAP * LS :\r\n");
+}

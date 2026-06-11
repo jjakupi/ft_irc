@@ -20,47 +20,80 @@ bool	Server::isValidModeCommand(std::string command)
 void Server::mode(std::string cmd, int fd)
 {
 	Client *client = getClient(fd);
-	if(!client)
-		return;
-	if(!client->getLoggedIn())
+	if (!client)
+		return ;
+	if (!client->getLoggedIn())
 	{
 		sendResponse(fd, ERR_NOTREGISTERED(client->getNickName()));
 		return ;
 	}
+
 	std::vector<std::string> args = splitCommand(cmd);
-	if (args.size() < 3)
+
+	if (args.size() < 2)
 	{
 		sendResponse(fd, ERR_NEEDMOREPARAMS(cmd));
 		return ;
 	}
+
 	std::string channelName = args[1];
+
 	if (!isValidChannelName(channelName))
 	{
 		sendResponse(fd, ERR_BADCHANMASK(client->getNickName(), channelName));
 		return ;
 	}
+
 	Channel *channel = getChannel(channelName);
-	if(!channel)
+	if (!channel)
 	{
 		sendResponse(fd, ERR_NOSUCHCHANNEL(client->getNickName(), channelName));
-		return;
+		return ;
 	}
-	if(!channel->hasUser(fd))
+
+	if (!channel->hasUser(fd))
 	{
 		sendResponse(fd, ERR_NOTONCHANNEL(client->getNickName(), channelName));
 		return ;
 	}
-	if(!channel->isOperator(fd))
+
+	if (args.size() == 2)
+	{
+		std::string modes = "+";
+		std::string params = "";
+
+		if (channel->isInvitedOnly())
+			modes += "i";
+		if (channel->isTopicRestricted())
+			modes += "t";
+		if (channel->hasKey())
+			modes += "k";
+		if (channel->hasLimit())
+		{
+			modes += "l";
+
+			std::stringstream ss;
+			ss << channel->getLimit();
+			params += " " + ss.str();
+		}
+		sendResponse(fd, RPL_CHANNELMODEIS(client->getNickName(), channelName, modes, params));
+		return ;
+	}
+
+	if (!channel->isOperator(fd))
 	{
 		sendResponse(fd, ERR_CHANOPRIVSNEEDED(client->getNickName(), channelName));
 		return ;
 	}
+
 	std::string modeChar = args[2];
-	if(!isValidModeCommand(modeChar))
+
+	if (!isValidModeCommand(modeChar))
 	{
 		sendResponse(fd, ERR_UNKNOWNMODE(client->getNickName(), modeChar));
-		return;
+		return ;
 	}
+
 	std::vector<int> users = channel->getUsers();
 	if (modeChar.size() >= 2 && modeChar[0] == '+' && modeChar[1] == 'i')
 	{
