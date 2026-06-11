@@ -85,6 +85,7 @@ class Server
 		void topic(std::string cmd, int fd);
 		void mode(std::string cmd, int fd);
 		void ping(std::string cmd, int fd);
+		void names(std::string cmd, int fd);
 };
 
 #endif

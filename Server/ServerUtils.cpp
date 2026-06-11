@@ -89,6 +89,8 @@ void Server::getCommand(std::string command, int fd)
 		this->topic(command, fd);
 	else if(cmdName == "MODE")
 		this->mode(command, fd);
+	else if(cmdName == "NAMES")
+		this->names(command, fd);
 	else
 	{
 		Client *client = getClient(fd);
