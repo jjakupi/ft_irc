@@ -68,9 +68,28 @@ void Server::ping(std::string cmd, int fd)
 	else
 		sendResponse(fd, "PONG :server\r\n");
 }
-
 void Server::cap(std::string cmd, int fd)
 {
-	(void)cmd;
-	sendResponse(fd, "CAP * LS :\r\n");
+	std::vector<std::string> args = splitCommand(cmd);
+
+	if (args.size() < 2)
+		return ;
+
+	if (args[1] == "LS")
+	{
+		sendResponse(fd, ":server CAP * LS :\r\n");
+		return ;
+	}
+	else if (args[1] == "REQ")
+	{
+		// WeeChat requests capabilities.
+		// Since we support none, we can ACK the empty request.
+		sendResponse(fd, ":server CAP * ACK :\r\n");
+		return ;
+	}
+	else if (args[1] == "END")
+	{
+		// End of CAP negotiation. Do nothing.
+		return ;
+	}
 }
