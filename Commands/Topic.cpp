@@ -43,12 +43,21 @@ void	Server::topic(std::string cmd, int fd)
 	}
 	else
 	{
+		if (channel->isTopicRestricted() && !channel->isOperator(fd))
+		{
+			sendResponse(fd, ERR_CHANOPRIVSNEEDED(client->getNickName(), channelName));
+			return ;
+		}
+
 		std::vector<int> users = channel->getUsers();
 		std::string topicText = args[2];
+
 		channel->setTopic(topicText);
+
 		for (size_t i = 0; i < users.size(); i++)
 		{
-			sendResponse(users[i], RPL_TOPIC_CHANGE(client->getNickName(), client->getUserName(), channelName, topicText));
+			sendResponse(users[i], RPL_TOPIC_CHANGE(client->getNickName(),
+				client->getUserName(), channelName, topicText));
 		}
 	}
 }

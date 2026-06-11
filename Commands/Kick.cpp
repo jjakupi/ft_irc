@@ -18,13 +18,22 @@ void Server::kick(std::string cmd, int fd) {
 	std::string reason = "No reason given";
 	if (args.size() >= 4)
 		reason = args[3];
-
-	Channel *channel = getChannel(normalizeChannelName(args[1]));
+	std::string channelName = args[1];
+	if (!isValidChannelName(channelName))
+	{
+		sendResponse(fd, ERR_BADCHANMASK(client->getNickName(), channelName));
+		return ;
+	}
+	Channel *channel = getChannel(channelName);
 	if (!channel) {
 		sendResponse(fd, ERR_NOSUCHCHANNEL(client->getNickName(), args[1]));
 		return ;
 	}
-
+	if (!channel->hasUser(fd))
+	{
+		sendResponse(fd, ERR_NOTONCHANNEL(client->getNickName(), channelName));
+		return ;
+	}
 	if (!channel->isOperator(fd)) {
 		sendResponse(fd, ERR_CHANOPRIVSNEEDED(client->getNickName(), args[1]));
 		return ;

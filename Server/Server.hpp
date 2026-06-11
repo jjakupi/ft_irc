@@ -61,7 +61,9 @@ class Server
 		Channel		*getChannel(std::string channelName);
 		bool		isValidChannelName(std::string channelName);
 		std::string	normalizeChannelName(std::string channelName);
-		std::string	createJoinMessage(Client *client, std::string channelName);
+		std::vector<std::string>	splitByComma(std::string str);
+		bool		isValidChannelKey(const std::string &key);
+		std::string	cleanKey(std::string key);
 		std::string	getChannelNames(Channel *channel);
 		bool		isValidModeCommand(std::string command);
 		//privmsg
@@ -70,6 +72,7 @@ class Server
 		static void		handleSignal(int sig);
 		static bool		isRunning();
 
+		void joinOneChannel(Client *client, int fd, std::string channelName, std::string key);
 		void pass(std::string cmd, int fd);
 		void nick(std::string cmd, int fd);
 		void user(std::string cmd, int fd);

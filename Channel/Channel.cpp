@@ -13,7 +13,7 @@ Channel::Channel()
 }
 
 Channel::Channel(std::string channelname)
-	: _channelName(channelname), _topic(""), _hasTopic(false), _invitedOnly(false), _Limit(0), _hasLimit(false), _hasKey(false), _key("")
+	: _channelName(channelname), _topic(""), _hasTopic(false), _topicRestricted(false), _invitedOnly(false), _Limit(0), _hasLimit(false), _hasKey(false), _key("")
 {
 }
 
@@ -32,6 +32,8 @@ Channel &Channel::operator=(const Channel&src)
 		this->_operators = src._operators;
 		this->_topic = src._topic;
 		this->_hasTopic = src._hasTopic;
+		this->_topicRestricted = src._topicRestricted;
+		this->_invitedUsers = src._invitedUsers;
 		this->_invitedOnly = src._invitedOnly;
 		this->_hasLimit = src._hasLimit;
 		this->_Limit = src._Limit;
@@ -120,6 +122,16 @@ void Channel::setTopic(std::string topic)
 {
 	this->_topic = topic;
 	this->_hasTopic = true;
+}
+
+bool	Channel::isTopicRestricted() const
+{
+	return (_topicRestricted);
+}
+
+void	Channel::setTopicRestricted(bool value)
+{
+	_topicRestricted = value;
 }
 
 bool Channel::hasInvitedUsers(int fd) const

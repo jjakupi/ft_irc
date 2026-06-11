@@ -14,6 +14,7 @@ class Channel
 		std::vector<int>	_operators;
 		std::string			_topic;
 		bool				_hasTopic;
+		bool				_topicRestricted;
 		std::vector<int>	_invitedUsers;
 		bool				_invitedOnly;
 		size_t				_Limit;
@@ -43,6 +44,8 @@ class Channel
 	bool				hasTopic() const;
 	std::string 		getTopic() const;
 	void				setTopic(std::string topic);
+	bool				isTopicRestricted() const;
+	void				setTopicRestricted(bool value);
 	//invite
 	bool				hasInvitedUsers(int fd) const;
 	std::vector<int>	getInvitedUsers() const;
