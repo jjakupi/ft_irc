@@ -19,7 +19,8 @@ SRC = Server/main.cpp \
 	Commands/PriveMsg.cpp \
 	Commands/Invite.cpp \
 	Commands/Topic.cpp \
-	Commands/Mode.cpp
+	Commands/Mode.cpp \
+	Commands/Names.cpp
 
 OBJ_DIR = obj
 OBJ = $(SRC:%.cpp=$(OBJ_DIR)/%.o)
