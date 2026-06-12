@@ -183,7 +183,7 @@ void Server::mode(std::string cmd, int fd)
 		}
 		if (!channel->hasUser(targetClient->getFd()))
 		{
-			sendResponse(fd, ERR_USERNOTINCHANNEL(targetNick, channelName));
+			sendResponse(fd, ERR_USERNOTINCHANNEL(client->getNickName(), targetNick, channelName));
 			return ;
 		}
 		if(channel->isOperator(targetClient->getFd()))
@@ -218,7 +218,7 @@ void Server::mode(std::string cmd, int fd)
 		}
 		if (!channel->hasUser(targetClient->getFd()))
 		{
-			sendResponse(fd, ERR_USERNOTINCHANNEL(targetNick, channelName));
+			sendResponse(fd, ERR_USERNOTINCHANNEL(client->getNickName(), targetNick, channelName));
 			return ;
 		}
 		if (!channel->isOperator(targetClient->getFd()))

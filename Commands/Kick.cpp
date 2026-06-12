@@ -41,7 +41,7 @@ void Server::kick(std::string cmd, int fd) {
 
 	Client *target = getClientNick(args[2]);
 	if (!target || !channel->hasUser(target->getFd())) {
-		sendResponse(fd, ERR_USERNOTINCHANNEL(args[2], args[1]));
+		sendResponse(fd, ERR_USERNOTINCHANNEL(client->getNickName(), args[2], channelName));
 		return ;
 	}
 

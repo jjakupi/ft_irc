@@ -21,7 +21,7 @@
 #define ERR_NOSUCHNICK(nick, target) (std::string(":server 401 ") + nick + " " + target + " :No such nick/channel\r\n")
 #define RPL_QUIT(nick, user, reason) (std::string(":") + nick + "!" + user + "@localhost QUIT :" + reason + "\r\n")
 #define ERR_CHANOPRIVSNEEDED(nick, channel) (std::string(":server 482 ") + nick + " " + channel + " :You're not channel operator\r\n")
-#define ERR_USERNOTINCHANNEL(nick, channel) (std::string(":server 441 ") + nick + " " + channel + " :They aren't on that channel\r\n")
+#define ERR_USERNOTINCHANNEL(nick, target, channel) (std::string(":server 441 ") + nick + " " + target + " " + channel + " :They aren't on that channel\r\n")
 #define RPL_KICK(kicker, user, channel, target, reason) (std::string(":") + kicker + "!" + user + "@localhost KICK " + channel + " " + target + " :" + reason + "\r\n")
 #define ERR_USERONCHANNEL(nick, target, channel) (std::string(":server 443 ") + nick + " " + target + " " + channel + " :is already on channel\r\n")
 #define RPL_INVITING(senderNick, channel, targetNick) (std::string(":server 341 ") + senderNick + " " + channel + " " + targetNick + "\r\n")
