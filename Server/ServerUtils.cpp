@@ -39,7 +39,6 @@ void	Server::receiveFromClient(int fd)
 		{
 			std::string command = client->popCommand();
 			command = client->cleanCommand(command);
-			std::cout << "CLEAN COMMAND=[" << command << "]" << std::endl;
 			if (!command.empty())
 				this->getCommand(command, fd);
 

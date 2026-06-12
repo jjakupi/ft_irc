@@ -29,9 +29,7 @@ void Server::names(std::string cmd, int fd)
 		sendResponse(fd, RPL_ENDOFNAMES(client->getNickName(), channelName));
 		return ;
 	}
-
 	std::string namesList = getChannelNames(channel);
-
 	sendResponse(fd, RPL_NAMREPLY(client->getNickName(), channelName, namesList));
 	sendResponse(fd, RPL_ENDOFNAMES(client->getNickName(), channelName));
 }

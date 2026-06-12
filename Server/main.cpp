@@ -23,18 +23,18 @@ int	main(int argc, char **argv)
 
 	if (server.initSocket() == -1)
 	{
-		std::cerr << RED << "Server closed" << std::endl;
+		std::cerr << RED << "\nServer closed" << std::endl;
 		server.cleanup();
 		return (1);
 	}
 
 	if (server.run() == -1)
 	{
-		std::cerr << RED << "Server closed" << std::endl;
+		std::cerr << RED << "\nServer closed" << std::endl;
 		server.cleanup();
 		return (1);
 	}
-	std::cerr << RED << "Server closed" << std::endl;
+	std::cerr << RED << "\nServer closed" << std::endl;
 	server.cleanup();
 	return (0);
 }
