@@ -52,6 +52,7 @@ void	Server::joinOneChannel(Client *client, int fd, std::string channelName, std
 	if (!channel)
 	{
 		Channel newChannel(originalName);
+		newChannel.setTopicRestricted(true);
 		newChannel.addUser(fd);
 		newChannel.addOperator(fd);
 		_channels.push_back(newChannel);
@@ -93,7 +94,10 @@ void	Server::joinOneChannel(Client *client, int fd, std::string channelName, std
 
 	for (size_t i = 0; i < users.size(); i++)
 		sendResponse(users[i], joinMsg);
-
+	if (channel->hasTopic())
+		sendResponse(fd, RPL_TOPIC(client->getNickName(), originalName, channel->getTopic()));
+	else
+		sendResponse(fd, RPL_NOTOPIC(client->getNickName(), originalName));
 	std::string names = getChannelNames(channel);
 	sendResponse(fd, RPL_NAMREPLY(client->getNickName(), originalName, names));
 	sendResponse(fd, RPL_ENDOFNAMES(client->getNickName(), originalName));

@@ -6,6 +6,7 @@ Channel::Channel()
 	this->_topic = "";
 	this->_hasTopic = false;
 	this->_invitedOnly = false;
+	this->_topicRestricted = true;
 	this->_hasLimit = false;
 	this->_Limit = 0;
 	this->_hasKey = false;
@@ -13,7 +14,7 @@ Channel::Channel()
 }
 
 Channel::Channel(std::string channelname)
-	: _channelName(channelname), _topic(""), _hasTopic(false), _topicRestricted(false), _invitedOnly(false), _Limit(0), _hasLimit(false), _hasKey(false), _key("")
+	: _channelName(channelname), _topic(""), _hasTopic(false), _topicRestricted(true), _invitedOnly(false), _Limit(0), _hasLimit(false), _hasKey(false), _key("")
 {
 }
 
