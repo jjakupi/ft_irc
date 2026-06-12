@@ -27,13 +27,12 @@ IRC (Internet Relay Chat) is a real-time text communication protocol created in 
 | `NICK` | Set or change nickname |
 | `USER` | Register username and real name |
 | `JOIN` | Join or create a channel |
-| `PART` | Leave a channel |
 | `PRIVMSG` | Send a message to a user or channel |
 | `QUIT` | Disconnect from the server |
 | `INVITE` | Invite a user to a channel |
-| `KICK` | Remove a user from a channel (operator only) |
-| `TOPIC` | View or set the channel topic (operator only) |
-| `MODE` | Set channel modes: `i`, `t`, `k`, `o`, `l` (operator only) |
+| `KICK` | Remove a user from a channel |
+| `TOPIC` | View or set the channel topic |
+| `MODE` | Set channel modes: `i`, `t`, `k`, `o`, `l` |
 
 ---
 
@@ -42,8 +41,8 @@ IRC (Internet Relay Chat) is a real-time text communication protocol created in 
 ### Requirements
 
 - A C++98 compatible compiler (`c++`)
-- macOS or Linux
-- An IRC client (e.g. [LimeChat](http://limechat.net/mac/), or `nc`)
+- Linux or macOS
+- An IRC client (e.g. [WeeChat](https://weechat.org/download/), [LimeChat](http://limechat.net/mac/), or `nc`)
 
 ### Compilation
 
@@ -67,11 +66,13 @@ make
 
 ### Connecting with an IRC client
 
-**LimeChat:**
-1. File → New Server
-2. Fill in: Server = `localhost`, Port = `6667`, Password = `mypassword`
-3. Set a nickname and click Connect
-4. Type `/join #channel` to join or create a channel
+**WeeChat:**
+1. /server add `ircserv` 127.0.0.1/6667 -password=mypassword
+2. /set irc.server.`ircserv`.nicks `your_nickname`
+3. /set irc.server.`ircserv`.username `your_username`
+2. /connect `ircserv`
+4. /join `#channel` to join or create a channel
+5. /buffer 1/2/x to switch between home and/or channels
 
 **With `nc` (for testing):**
 ```bash
@@ -83,11 +84,6 @@ JOIN #test
 PRIVMSG #test :Hello!
 ```
 
-### Cleanup
-
-```bash
-make fclean
-```
 
 ---
 
@@ -106,6 +102,7 @@ make fclean
 
 ### Useful Tools
 
+- [WeeChat IRC client for Linux](https://weechat.org/download/)
 - [LimeChat IRC client for macOS](http://limechat.net/mac/)
 
 ### AI Usage
@@ -118,6 +115,6 @@ Claude was used as a learning assistant to start this project, specifically for:
 
 - **Git workflow:** guidance on branches, pull requests, and collaborative development practices
 
-- **Write a structured README:** detailing all steps and specific commands
+- **Help write a structured README:** detailing all steps and specific commands with .md syntax
 
 All code was written and understood by us. AI was used as a pedagogical tool, not as a code generator.
